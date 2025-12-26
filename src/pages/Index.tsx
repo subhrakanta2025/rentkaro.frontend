@@ -51,7 +51,7 @@ const Index = () => {
             <div className="container flex flex-col items-center justify-center py-12">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
               <p className="text-lg">Loading vehicles from API...</p>
-              <p className="text-sm text-muted-foreground">Fetching from: http://localhost:3000/api/vehicles</p>
+              <p className="text-sm text-muted-foreground">Fetching from: https://rentkaro-backend-807261496773.us-central1.run.app/api/vehicles</p>
             </div>
           ) : isError ? (
             <div className="container py-12">
@@ -63,7 +63,7 @@ const Index = () => {
                   <pre className="text-sm overflow-auto">{JSON.stringify(error, null, 2)}</pre>
                 </div>
                 <div className="mt-4 text-sm text-red-600">
-                  <p>• Check if backend is running on http://localhost:3000</p>
+                  <p>• Check if backend is running on https://rentkaro-backend-807261496773.us-central1.run.app</p>
                   <p>• Check browser console for more details (F12)</p>
                   <p>• Check network tab for failed requests</p>
                 </div>
