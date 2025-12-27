@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
 import { NewsletterForm } from './NewsletterForm';
 import { cn } from '@/lib/utils';
-import rentkaroLogo from '@/assets/rentkaro-logo.png';
+import { APP_LOGO_PATH } from '@/lib/logo';
 
 function FooterLogo() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -14,7 +14,7 @@ function FooterLogo() {
         <div className="skeleton-logo h-14 w-32 absolute inset-0" />
       )}
       <img 
-        src={rentkaroLogo} 
+        src={APP_LOGO_PATH} 
         alt="RentKaro" 
         className={cn(
           "h-14 w-auto hover-bounce",

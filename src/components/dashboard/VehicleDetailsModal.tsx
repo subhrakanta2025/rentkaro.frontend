@@ -34,7 +34,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from 'sonner';
 import { useVehicle } from '@/hooks/useVehicles';
 import { apiClient } from '@/services/api';
-import rentkaroLogo from '@/assets/rentkaro-logo.png';
+import { getAppLogoUrl } from '@/lib/logo';
 
 // --- Types ---
 interface Vehicle {
@@ -121,9 +121,7 @@ export function VehicleDetailsModal({ vehicle, isOpen, onClose }: VehicleDetails
   const [availability, setAvailability] = useState<AvailabilityResponse | null>(null);
   const [isCheckingAvailability, setIsCheckingAvailability] = useState(false);
 
-  const brandLogo = (typeof window !== 'undefined' && window.location)
-    ? `${window.location.origin}/rentkaro-logo.png`
-    : (rentkaroLogo as string);
+  const brandLogo = getAppLogoUrl();
 
   const vehicleId = vehicle?.id || '';
   const { data: fetchedVehicle, isFetching } = useVehicle(vehicleId);

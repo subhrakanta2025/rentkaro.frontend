@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { Menu, X, Bike, LogIn, LogOut, UserCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import rentkaroLogo from '@/assets/rentkaro-logo.png';
+import { APP_LOGO_PATH } from '@/lib/logo';
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -21,7 +21,7 @@ function LogoWithSkeleton() {
         <div className="skeleton-logo h-10 w-40 absolute" />
       )}
       <img 
-        src={rentkaroLogo} 
+        src={APP_LOGO_PATH} 
         alt="RentKaro" 
         className={cn(
           "h-10 md:h-12 object-contain hover-bounce",
