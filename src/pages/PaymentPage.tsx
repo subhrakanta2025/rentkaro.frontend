@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { apiClient } from '@/services/api';
-import rentkaroLogo from '@/assets/rentkaro-logo.png';
+import { getAppLogoUrl } from '@/lib/logo';
 import { toast } from 'sonner';
 import { differenceInCalendarDays } from 'date-fns';
 import {
@@ -124,7 +124,7 @@ export default function PaymentPage() {
 
       // 3) Load Razorpay SDK and open checkout
       await loadRazorpay();
-      const brandLogo = `${window.location.origin}/rentkaro-logo.png`;
+      const brandLogo = getAppLogoUrl();
       const rzp = new window.Razorpay({
         key: keyId,
         amount: order.amount,

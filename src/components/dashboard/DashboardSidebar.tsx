@@ -35,7 +35,7 @@ import {
 } from '@/components/ui/collapsible';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
-import rentkaroLogo from '@/assets/rentkaro-logo.png';
+import { APP_LOGO_PATH } from '@/lib/logo';
 import { useAgencyProfile } from '@/hooks/useAgencyProfile';
 
 export function DashboardSidebar() {
@@ -66,7 +66,7 @@ export function DashboardSidebar() {
       <SidebarHeader className="border-b border-border h-20 flex items-center justify-center p-0">
         <Link to={canListVehicles ? '/agency/dashboard' : '/dashboard'} className="flex items-center gap-2">
           <img 
-            src={rentkaroLogo} 
+            src={APP_LOGO_PATH} 
             alt="RentKaro" 
             className={cn(
               "h-20 object-contain transition-all",
