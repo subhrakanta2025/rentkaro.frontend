@@ -16,6 +16,7 @@ import {
   CheckCircle,
   Lock,
 } from 'lucide-react';
+import { APP_FAVICON_PATH } from '@/lib/logo';
 
 export default function AgencyRegisterPage() {
   const navigate = useNavigate();
@@ -176,10 +177,8 @@ export default function AgencyRegisterPage() {
       <div className="container-dashboard">
         <div className="mx-auto max-w-md">
           {/* Logo */}
-          <div className="text-center mb-8">
-            <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-primary mb-4">
-              <Building2 className="h-6 w-6 text-primary-foreground" />
-            </div>
+          <div className="text-center mb-6">
+            <img src={APP_FAVICON_PATH} alt="RentKaro" className="mx-auto h-12 w-auto object-contain" />
             <h1 className="text-2xl font-bold text-foreground">Partner with RentKaro</h1>
             <p className="mt-2 text-muted-foreground">
               Register as a rental agency and grow your business

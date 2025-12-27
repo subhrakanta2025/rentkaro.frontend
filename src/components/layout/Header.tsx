@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
-import { Menu, X, Bike, LogIn, LogOut, UserCircle } from 'lucide-react';
+import { Menu, X, LogIn, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { APP_LOGO_PATH } from '@/lib/logo';
 
@@ -16,16 +16,16 @@ function LogoWithSkeleton() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   return (
-    <div className="relative h-16 flex items-center">
+    <div className="relative h-14 md:h-16 flex items-center">
       {!isLoaded && (
-        <div className="skeleton-logo h-10 w-40 absolute" />
+        <div className="skeleton-logo absolute h-16 w-40 rounded-2xl bg-muted/30" />
       )}
-      <img 
-        src={APP_LOGO_PATH} 
-        alt="RentKaro" 
+      <img
+        src={APP_LOGO_PATH}
+        alt="RentKaro"
         className={cn(
-          "h-10 md:h-12 object-contain hover-bounce",
-          isLoaded ? "animate-fade-in" : "opacity-0"
+          "h-10 md:h-12 w-auto object-contain hover-bounce transition-all duration-300",
+          isLoaded ? "opacity-100" : "opacity-0"
         )}
         onLoad={() => setIsLoaded(true)}
       />
