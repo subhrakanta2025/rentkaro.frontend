@@ -6,8 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/contexts/AuthContext';
-import { Car, Mail, Lock, Eye, EyeOff, ArrowRight, Bike, Info, RefreshCw } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ArrowRight, Bike, Info, RefreshCw } from 'lucide-react';
 import { toast } from 'sonner';
+import { APP_FAVICON_PATH } from '@/lib/logo';
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -73,14 +74,10 @@ export default function LoginPage() {
       <Header />
       <main className="container py-12">
         <div className="mx-auto max-w-md">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-primary">
-                <Car className="h-6 w-6 text-primary-foreground" />
-              </div>
-            </div>
-            <h1 className="mt-6 text-2xl font-bold text-foreground">Welcome back</h1>
-            <p className="mt-2 text-muted-foreground">Sign in to your RentKaro account</p>
+          <div className="text-center mb-6">
+            <img src={APP_FAVICON_PATH} alt="RentKaro" className="mx-auto h-12 w-auto object-contain" />
+            <h1 className="mt-3 text-2xl font-bold text-foreground">Welcome back</h1>
+            <p className="mt-1 text-muted-foreground">Sign in to your RentKaro account</p>
           </div>
 
           {isFromAgencyRegister && (

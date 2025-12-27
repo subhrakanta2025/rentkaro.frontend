@@ -6,8 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/contexts/AuthContext';
-import { Car, Mail, Lock, Eye, EyeOff, User, Phone, ArrowRight, CheckCircle } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, User, Phone, ArrowRight, CheckCircle } from 'lucide-react';
 import { toast } from 'sonner';
+import { APP_FAVICON_PATH } from '@/lib/logo';
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -46,12 +47,10 @@ export default function RegisterPage() {
       <Header />
       <main className="container py-12">
         <div className="mx-auto max-w-md">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-primary"><Car className="h-6 w-6 text-primary-foreground" /></div>
-            </div>
-            <h1 className="mt-6 text-2xl font-bold text-foreground">Create your account</h1>
-            <p className="mt-2 text-muted-foreground">Join RentKaro and start renting today</p>
+          <div className="text-center mb-6">
+            <img src={APP_FAVICON_PATH} alt="RentKaro" className="mx-auto h-12 w-auto object-contain" />
+            <h1 className="mt-3 text-2xl font-bold text-foreground">Create your account</h1>
+            <p className="mt-1 text-muted-foreground">Join RentKaro and start renting today</p>
           </div>
           <div className="mb-6 grid grid-cols-2 gap-2">
             {benefits.map((benefit) => (<div key={benefit} className="flex items-center gap-2 text-sm text-muted-foreground"><CheckCircle className="h-4 w-4 text-success" />{benefit}</div>))}

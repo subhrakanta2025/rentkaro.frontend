@@ -7,7 +7,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { apiClient } from '@/services/api';
 import { toast } from 'sonner';
-import { Mail, RefreshCw, CheckCircle } from 'lucide-react';
+import { Mail, RefreshCw } from 'lucide-react';
+import { APP_FAVICON_PATH } from '@/lib/logo';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
@@ -57,12 +58,10 @@ export default function ForgotPasswordPage() {
       <Header />
       <main className="container py-12">
         <div className="mx-auto max-w-md">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center rounded-2xl bg-primary/10 h-16 w-16">
-              <CheckCircle className="h-8 w-8 text-primary" />
-            </div>
-            <h1 className="mt-4 text-2xl font-bold text-foreground">Forgot your password?</h1>
-            <p className="mt-2 text-muted-foreground">Enter your account email and we'll send you a secure reset link.</p>
+          <div className="text-center mb-6">
+            <img src={APP_FAVICON_PATH} alt="RentKaro" className="mx-auto h-12 w-auto object-contain" />
+            <h1 className="mt-3 text-2xl font-bold text-foreground">Forgot your password?</h1>
+            <p className="mt-1 text-muted-foreground">Enter your account email and we'll send you a secure reset link.</p>
           </div>
 
           <div className="rounded-xl border border-border bg-card p-8 shadow-card">
