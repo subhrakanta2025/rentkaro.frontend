@@ -22,6 +22,7 @@ import {
   Shield,
   Check,
   ChevronsUpDown,
+  MapPin,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
@@ -37,7 +38,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { useCities } from '@/hooks/useCities';
 
 interface VehicleForm {
   type: 'bike' | 'car';
@@ -109,17 +109,15 @@ export default function AddVehiclePage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isFetching, setIsFetching] = useState(true); // Always start with true
   const [agencyId, setAgencyId] = useState<string | null>(null);
+  const [agencyCity, setAgencyCity] = useState<string>(''); // Agency's location for pickup
   const [openBrand, setOpenBrand] = useState(false);
   const [openModel, setOpenModel] = useState(false);
   const [openColor, setOpenColor] = useState(false);
-  const [openCity, setOpenCity] = useState(false);
   const [brandSearch, setBrandSearch] = useState('');
   const [modelSearch, setModelSearch] = useState('');
-  const [citySearch, setCitySearch] = useState('');
   const [brands, setBrands] = useState<{ id: string; name: string; vehicle_type: string }[]>([]);
   const [models, setModels] = useState<{ id: string; name: string; brand_id: string }[]>([]);
   const [selectedBrandId, setSelectedBrandId] = useState<string>('');
-  const { data: cityOptions = [], isLoading: isCitiesLoading } = useCities();
 
   const colorOptions = [
     'Black', 'White', 'Silver', 'Grey', 'Red', 'Blue', 'Green', 'Yellow',
@@ -182,8 +180,19 @@ export default function AddVehiclePage() {
       const profileResp: any = await apiClient.getUserProfile();
       const agencyIdFromBackend = profileResp?.agencyStatus?.agencyId || profileResp?.agencyDetails?.id || null;
       if (agencyIdFromBackend) {
-        console.log('Found agency via backend profile:', agencyIdFromBackend);
         setAgencyId(agencyIdFromBackend);
+        // Fetch agency details to get location
+        try {
+          const agencyResp: any = await apiClient.getAgency(agencyIdFromBackend);
+          const city = agencyResp?.agency?.city || agencyResp?.agency?.location || '';
+          setAgencyCity(city);
+          // Auto-set city in form
+          if (city && !formData.city) {
+            setFormData(prev => ({ ...prev, city }));
+          }
+        } catch (e) {
+          console.error('Failed to fetch agency details:', e);
+        }
         return agencyIdFromBackend;
       }
       setAgencyId(null);
@@ -340,7 +349,7 @@ export default function AddVehiclePage() {
       case 1: // Vehicle Type & Basic Details
         return !!(formData.brand && formData.model && formData.color && formData.year && formData.registration_number);
       case 2: // Specifications & Pricing
-        return !!(formData.transmission && formData.fuel_type && formData.price_per_day && formData.city && formData.price_per_week);
+        return !!(formData.transmission && formData.fuel_type && formData.price_per_day && formData.price_per_week);
       case 3: // Documents - allow progression; enforce at final submit
         return true;
       case 4: // Images
@@ -386,10 +395,13 @@ export default function AddVehiclePage() {
       }
     }
 
-    if (!formData.brand || !formData.model || !formData.price_per_day || !formData.price_per_week || !formData.city) {
+    if (!formData.brand || !formData.model || !formData.price_per_day || !formData.price_per_week) {
       toast.error('Please fill in all required fields');
       return;
     }
+
+    // Use agency's city as location
+    const vehicleCity = formData.city || agencyCity;
 
     if (!formData.registration_number) {
       toast.error('Registration number is required');
@@ -448,7 +460,7 @@ export default function AddVehiclePage() {
         price_per_day: parseFloat(formData.price_per_day),
         price_per_week: formData.price_per_week ? parseFloat(formData.price_per_week) : null,
         weekly_rate: formData.price_per_week ? parseFloat(formData.price_per_week) : null,
-        city: formData.city,
+        city: vehicleCity,
         specifications: {
           displacement: formData.displacement || null,
           top_speed: formData.top_speed || null,
@@ -484,7 +496,7 @@ export default function AddVehiclePage() {
         weeklyRate: formData.price_per_week ? parseFloat(formData.price_per_week) : null,
         monthlyRate: null,
         securityDeposit: 0,
-        location: formData.city,
+        location: vehicleCity,
         displacement: formData.displacement || null,
         topSpeed: formData.top_speed || null,
         fuelCapacity: formData.fuel_capacity || null,
@@ -523,15 +535,12 @@ export default function AddVehiclePage() {
   };
 
   if (isFetching) {
-    console.log('AddVehiclePage: Showing loading state');
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
       </div>
     );
   }
-
-  console.log('AddVehiclePage: Rendering form. AgencyId:', agencyId, 'isFetching:', isFetching);
 
   return (
     <DashboardLayout title={isEditing ? 'Edit Vehicle' : 'Add Vehicle'} description="Add a new vehicle to your listings">
@@ -864,9 +873,9 @@ export default function AddVehiclePage() {
                   </div>
                 </div>
 
-                {/* Pricing & Location */}
+                {/* Pricing */}
                 <div className="rounded-lg border border-border bg-card p-4 shadow-card">
-                  <h2 className="text-lg font-semibold text-foreground mb-4">Pricing & Location</h2>
+                  <h2 className="text-lg font-semibold text-foreground mb-4">Pricing</h2>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="price_per_day">Price per Day (₹) <span className="text-destructive">*</span></Label>
@@ -892,54 +901,20 @@ export default function AddVehiclePage() {
                         className="mt-1"
                       />
                     </div>
-                    <div>
-                      <Label>City <span className="text-destructive">*</span></Label>
-                      <Popover open={openCity} onOpenChange={setOpenCity}>
-                        <PopoverTrigger asChild>
-                          <Button
-                            variant="outline"
-                            role="combobox"
-                            aria-expanded={openCity}
-                            className="w-full justify-between mt-1"
-                          >
-                            {formData.city || 'Select city...'}
-                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-full p-0">
-                          <Command>
-                            <CommandInput placeholder="Search city..." value={citySearch} onValueChange={setCitySearch} />
-                            <CommandList>
-                              <CommandEmpty>{isCitiesLoading ? 'Loading cities...' : 'No city found.'}</CommandEmpty>
-                              <CommandGroup>
-                                {(cityOptions || [])
-                                  .filter((c: any) => c.name.toLowerCase().includes(citySearch.toLowerCase()))
-                                  .map((city: any) => (
-                                    <CommandItem
-                                      key={city.id}
-                                      value={city.name}
-                                      onSelect={() => {
-                                        setFormData({ ...formData, city: city.name });
-                                        setCitySearch('');
-                                        setOpenCity(false);
-                                      }}
-                                    >
-                                      <Check
-                                        className={cn(
-                                          "mr-2 h-4 w-4",
-                                          formData.city === city.name ? "opacity-100" : "opacity-0"
-                                        )}
-                                      />
-                                      {city.name}
-                                    </CommandItem>
-                                  ))}
-                              </CommandGroup>
-                            </CommandList>
-                          </Command>
-                        </PopoverContent>
-                      </Popover>
-                    </div>
                   </div>
+                  
+                  {/* Pickup Location Info */}
+                  <div className="mt-4 p-3 rounded-lg bg-muted/50 border border-border/50">
+                    <div className="flex items-center gap-2 text-sm">
+                      <MapPin className="h-4 w-4 text-primary" />
+                      <span className="text-muted-foreground">Pickup Location:</span>
+                      <span className="font-medium text-foreground">{agencyCity || 'Based on agency address'}</span>
+                    </div>
+                    <p className="text-[10px] text-muted-foreground mt-1 ml-6">
+                      Vehicle pickup location is automatically set from your agency profile
+                    </p>
+                  </div>
+                  
                   <div className="mt-4">
                     <Label htmlFor="features">Features (comma separated)</Label>
                     <Textarea

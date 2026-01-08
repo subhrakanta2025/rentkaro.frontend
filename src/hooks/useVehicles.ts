@@ -20,6 +20,7 @@ export interface Vehicle {
   agencyName: string;
   agencyLogo: string;
   isAvailable: boolean;
+  isFavorite?: boolean;
   imageUrl?: string;
   seatingCapacity?: number;
   status?: string;
@@ -27,6 +28,13 @@ export interface Vehicle {
   securityDeposit?: number;
   deposit?: number;
   agencyId?: string;
+  displacement?: string;
+  topSpeed?: string;
+  fuelCapacity?: string;
+  weight?: string;
+  timings?: string;
+  excessPerKm?: number;
+  lateFeePerHr?: number;
   agencyLocation?: {
     address?: string;
     city?: string;
@@ -78,6 +86,7 @@ const mapApiVehicleToVehicle = (apiVehicle: any): Vehicle => {
     agencyName: apiVehicle.agencyName || 'Ride India Rentals',
     agencyLogo: apiVehicle.agencyLogo || 'https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=100&h=100&fit=crop',
     isAvailable: apiVehicle.isAvailable ?? true,
+    isFavorite: apiVehicle.isFavorite ?? false,
     imageUrl: primaryImage,
     seatingCapacity: apiVehicle.seatingCapacity,
     status: apiVehicle.status || 'available',
@@ -85,6 +94,13 @@ const mapApiVehicleToVehicle = (apiVehicle: any): Vehicle => {
     securityDeposit: apiVehicle.securityDeposit ?? apiVehicle.security_deposit ?? 0,
     deposit: apiVehicle.securityDeposit ?? apiVehicle.security_deposit ?? 0,
     agencyId: apiVehicle.agencyId,
+    displacement: apiVehicle.displacement,
+    topSpeed: apiVehicle.topSpeed,
+    fuelCapacity: apiVehicle.fuelCapacity,
+    weight: apiVehicle.weight,
+    timings: apiVehicle.timings,
+    excessPerKm: apiVehicle.excessPerKm,
+    lateFeePerHr: apiVehicle.lateFeePerHr,
     agencyLocation: agencyLocation
       ? {
           address: agencyLocation.address,
@@ -98,23 +114,51 @@ const mapApiVehicleToVehicle = (apiVehicle: any): Vehicle => {
   };
 };
 
-export function useVehicles(params?: { search?: string; wheelers?: '2' | '4'; city?: string; type?: string }) {
+export function useVehicles(params?: { search?: string; wheelers?: '2' | '4'; city?: string; type?: string; startDate?: string; endDate?: string; favorite?: boolean }) {
+  const normalizeCity = (value?: string) => {
+    if (!value) return undefined;
+    return value
+      .trim()
+      .replace(/\s+/g, ' ')
+      .split(' ')
+      .map((w) => (w ? w[0].toUpperCase() + w.slice(1).toLowerCase() : ''))
+      .join(' ');
+  };
+
+  const cityNormalized = normalizeCity(params?.city);
+
   return useQuery({
-    queryKey: ['vehicles', params?.search || '', params?.wheelers || '', params?.city || '', params?.type || ''],
+    queryKey: [
+      'vehicles',
+      params?.search || '',
+      params?.wheelers || '',
+      cityNormalized || '',
+      params?.type || '',
+      params?.startDate || '',
+      params?.endDate || '',
+      params?.favorite ? 'favorites' : '',
+    ],
     queryFn: async () => {
       const response: any = await apiClient.getVehicles({
         page: 1,
         per_page: 24,
         wheelers: params?.wheelers as any,
-        location: params?.city || undefined,
+        location: cityNormalized,
         type: params?.type,
         search: params?.search,
+        startDate: params?.startDate,
+        endDate: params?.endDate,
+        favorite: params?.favorite,
       });
 
-      if (response.vehicles && Array.isArray(response.vehicles)) {
-        return response.vehicles.map(mapApiVehicleToVehicle);
-      }
-      return [];
+      const vehicles =
+        (Array.isArray(response?.vehicles) && response.vehicles) ||
+        (Array.isArray(response?.data?.vehicles) && response.data.vehicles) ||
+        (Array.isArray(response?.data) && response.data) ||
+        (Array.isArray(response?.results) && response.results) ||
+        [];
+
+      return vehicles.map(mapApiVehicleToVehicle);
     },
     retry: 1,
     staleTime: 1000 * 60 * 2,

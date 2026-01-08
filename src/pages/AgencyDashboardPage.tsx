@@ -19,6 +19,7 @@ import {
   Mail,
   MapPin,
   ArrowRight,
+  Edit,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -209,6 +210,12 @@ export default function AgencyDashboardPage() {
             <Badge className={cn('w-fit px-4 py-1 text-sm', agencyDetails.isVerified ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800')}>
               {agencyDetails.isVerified ? 'Verified' : 'Under review'}
             </Badge>
+            <Link to={`/agency/edit/${agencyId}`}>
+              <Button variant="outline" size="sm" className="gap-2">
+                <Edit className="h-4 w-4" />
+                Edit Profile
+              </Button>
+            </Link>
           </div>
 
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

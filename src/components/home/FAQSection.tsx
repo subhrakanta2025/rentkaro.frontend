@@ -29,29 +29,29 @@ const faqs = [
 
 export function FAQSection() {
   return (
-    <section className="bg-muted/30 py-16 md:py-24">
+    <section className="bg-muted/30 py-8 sm:py-10 md:py-14">
       <div className="container">
-        <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-3xl font-bold text-foreground md:text-4xl">
+        <div className="mx-auto max-w-2xl text-center">
+          <h2 className="text-lg sm:text-xl font-bold text-foreground md:text-2xl">
             Frequently Asked Questions
           </h2>
-          <p className="mt-4 text-lg text-muted-foreground">
+          <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm text-muted-foreground px-2">
             Got questions? We have answers to help you get started.
           </p>
         </div>
 
-        <div className="mx-auto mt-12 max-w-3xl">
-          <Accordion type="single" collapsible className="space-y-4">
+        <div className="mx-auto mt-5 sm:mt-8 max-w-2xl">
+          <Accordion type="single" collapsible className="space-y-1.5 sm:space-y-2">
             {faqs.map((faq, index) => (
               <AccordionItem
                 key={index}
                 value={`item-${index}`}
-                className="rounded-xl border border-border bg-card px-6 data-[state=open]:bg-card"
+                className="rounded-lg border border-border bg-card px-3 sm:px-4 data-[state=open]:bg-card"
               >
-                <AccordionTrigger className="text-left text-base font-medium hover:no-underline">
+                <AccordionTrigger className="text-left text-xs sm:text-sm font-medium hover:no-underline py-2.5 sm:py-3">
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground">
+                <AccordionContent className="text-[10px] sm:text-xs text-muted-foreground pb-2.5 sm:pb-3 leading-relaxed">
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>

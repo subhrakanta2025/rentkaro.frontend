@@ -11,14 +11,6 @@ export function ProtectedRoute({ children, requiredRole, requireKYC }: Protected
   const { user, userRole, isKYCVerified, isLoading } = useAuth();
   const location = useLocation();
 
-  console.log('ProtectedRoute check:', { 
-    path: location.pathname, 
-    requiredRole, 
-    userRole, 
-    user: !!user,
-    isLoading 
-  });
-
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">

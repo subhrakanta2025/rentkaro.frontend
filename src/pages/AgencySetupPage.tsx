@@ -18,7 +18,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import {
   Building2,
-  MapPin,
   Phone,
   Mail,
   FileText,
@@ -33,6 +32,7 @@ import {
   Image as ImageIcon,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import LocationPickerMap from '@/components/LocationPickerMap';
 
 const steps = [
   { id: 1, name: 'Agency Profile', icon: Building2 },
@@ -47,8 +47,6 @@ const transmissionTypes = ['Automatic', 'Manual'];
 export default function AgencySetupPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  
-  console.log('AgencySetupPage: Rendering, user:', user?.id);
   
   const [currentStep, setCurrentStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
@@ -68,6 +66,8 @@ export default function AgencySetupPage() {
     state: parsedPendingData.state || '',
     phone: '',
     email: '',
+    latitude: '',
+    longitude: '',
   });
 
   // Clear pending data from localStorage after first load
@@ -113,6 +113,17 @@ export default function AgencySetupPage() {
 
   const handlePricingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPricingData({ ...pricingData, [e.target.name]: e.target.value });
+  };
+
+  const handleLocationChange = (lat: string, lng: string, address?: string, city?: string, state?: string) => {
+    setAgencyData(prev => ({
+      ...prev,
+      latitude: lat,
+      longitude: lng,
+      ...(address && { address }),
+      ...(city && { city }),
+      ...(state && { state }),
+    }));
   };
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -177,7 +188,6 @@ export default function AgencySetupPage() {
   };
 
   const handleStep1Submit = async () => {
-    console.log('Step 1 Submit - Creating agency with data:', agencyData);
     if (!agencyData.name || !agencyData.city || !agencyData.phone) {
       toast.error('Please fill in all required fields');
       return;
@@ -197,13 +207,14 @@ export default function AgencySetupPage() {
           state: agencyData.state || null,
           phone: agencyData.phone,
           email: agencyData.email || user?.email,
+          latitude: agencyData.latitude ? parseFloat(agencyData.latitude) : null,
+          longitude: agencyData.longitude ? parseFloat(agencyData.longitude) : null,
         })
         .select('id')
         .single();
 
       if (error) throw error;
 
-      console.log('Agency created successfully:', data.id);
       setAgencyId(data.id);
       toast.success('Agency profile created!');
       setCurrentStep(2);
@@ -216,7 +227,6 @@ export default function AgencySetupPage() {
   };
 
   const handleStep2Submit = async () => {
-    console.log('Step 2 Submit - Adding vehicle');
     if (!vehicleData.name || !vehicleData.brand || !vehicleData.model || !vehicleData.type) {
       toast.error('Please fill in all required fields');
       return;
@@ -429,6 +439,13 @@ export default function AgencySetupPage() {
                     onChange={handleAgencyChange}
                   />
                 </div>
+
+                {/* Location Picker Map Section */}
+                <LocationPickerMap
+                  latitude={agencyData.latitude}
+                  longitude={agencyData.longitude}
+                  onLocationChange={handleLocationChange}
+                />
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>

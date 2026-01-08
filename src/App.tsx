@@ -26,6 +26,7 @@ import AgencyDashboardPage from "./pages/AgencyDashboardPage";
 import AgencyRegisterPage from "./pages/AgencyRegisterPage";
 import AgencySetupPage from "./pages/AgencySetupPage";
 import AgencyKYCPage from "./pages/AgencyKYCPage";
+import AgencyEditPage from "./pages/AgencyEditPage";
 import AddVehiclePage from "./pages/AddVehiclePage";
 import MyVehiclesPage from "./pages/MyVehiclesPage";
 import AgencyBookingsPage from "./pages/AgencyBookingsPage";
@@ -41,6 +42,7 @@ import RefundPage from "./pages/RefundPage";
 import SafetyPage from "./pages/SafetyPage";
 import BlogPage from "./pages/BlogPage";
 import BlogPostPage from "./pages/BlogPostPage";
+import FavoritesPage from "./pages/FavoritesPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -67,6 +69,7 @@ function AppRoutes() {
           <Route path="/" element={<Index />} />
           <Route path="/vehicles" element={<VehiclesPage />} />
           <Route path="/vehicles/:id" element={<VehicleDetailPage />} />
+          <Route path="/favorites" element={<ProtectedRoute><FavoritesPage /></ProtectedRoute>} />
           <Route path="/booking/:id" element={<ProtectedRoute><BookingPage /></ProtectedRoute>} />
           <Route path="/new-booking/:id" element={<NewBookingPage />} />
           <Route path="/login" element={<LoginPage />} />
@@ -103,6 +106,7 @@ function AppRoutes() {
           <Route path="/agency/register" element={<ProtectedRoute><AgencyRegisterPage /></ProtectedRoute>} />
           <Route path="/agency/setup" element={<ProtectedRoute><AgencySetupPage /></ProtectedRoute>} />
           <Route path="/agency/kyc" element={<ProtectedRoute><AgencyKYCPage /></ProtectedRoute>} />
+          <Route path="/agency/edit/:id" element={<ProtectedRoute requiredRole="agency"><AgencyEditPage /></ProtectedRoute>} />
           <Route path="/agency/dashboard" element={<ProtectedRoute requiredRole="agency"><AgencyDashboardPage /></ProtectedRoute>} />
           <Route path="/agency/my-vehicles" element={<ProtectedRoute requiredRole="agency"><MyVehiclesPage /></ProtectedRoute>} />
           <Route path="/agency/bookings" element={<ProtectedRoute requiredRole="agency"><AgencyBookingsPage /></ProtectedRoute>} />

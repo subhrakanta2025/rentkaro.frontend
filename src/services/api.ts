@@ -263,28 +263,46 @@ class APIClient {
     return this.request(`/users/${userId}`, { method: 'GET' }, false);
   }
 
+  // Upload endpoints
+  async uploadFiles(files: File[]): Promise<{ urls: string[] }> {
+    const formData = new FormData();
+    files.forEach((file) => formData.append('files', file));
+
+    // Uploads require auth; backend returns public URLs
+    return this.post('/uploads', formData, true);
+  }
+
   // Vehicle endpoints
   async getVehicles(params?: {
     page?: number;
     per_page?: number;
     type?: string;
     location?: string;
+    city?: string;
     wheelers?: '2' | '4' | '2w' | '4w' | 'two' | 'four';
     search?: string;
+    startDate?: string;
+    endDate?: string;
+    favorite?: boolean;
   }) {
     const queryString = new URLSearchParams();
     if (params?.page) queryString.append('page', params.page.toString());
     if (params?.per_page) queryString.append('per_page', params.per_page.toString());
     if (params?.type) queryString.append('type', params.type);
     if (params?.location) queryString.append('location', params.location);
+    if (params?.city) queryString.append('city', params.city);
     if (params?.wheelers) queryString.append('wheelers', params.wheelers);
     if (params?.search) queryString.append('q', params.search);
+    if (params?.startDate) queryString.append('start_date', params.startDate);
+    if (params?.endDate) queryString.append('end_date', params.endDate);
+    if (params?.favorite) queryString.append('favorite', '1');
 
     const endpoint = queryString.toString() 
       ? `/vehicles?${queryString.toString()}`
       : '/vehicles';
 
-    return this.request(endpoint, { method: 'GET' }, false);
+    // Include auth if requesting favorites
+    return this.request(endpoint, { method: 'GET' }, params?.favorite || false);
   }
 
   async getVehicle(vehicleId: string) {
@@ -353,6 +371,19 @@ class APIClient {
     return this.request(`/bookings/${bookingId}`, { method: 'GET' });
   }
 
+  async getMyBookings(params?: {
+    status?: string;
+    startDate?: string;
+    endDate?: string;
+  }) {
+    const query = new URLSearchParams();
+    if (params?.status) query.append('status', params.status);
+    if (params?.startDate) query.append('start_date', params.startDate);
+    if (params?.endDate) query.append('end_date', params.endDate);
+    const endpoint = query.toString() ? `/bookings/me?${query.toString()}` : '/bookings/me';
+    return this.request(endpoint, { method: 'GET' });
+  }
+
   async createBooking(bookingData: any) {
     return this.request('/bookings', {
       method: 'POST',
@@ -376,6 +407,28 @@ class APIClient {
 
   async cancelBooking(bookingId: string) {
     return this.request(`/bookings/${bookingId}/cancel`, { method: 'PUT' });
+  }
+
+  // Feedback endpoints
+  async submitFeedback(feedbackData: {
+    bookingId: string;
+    rating: number;
+    comment?: string;
+  }) {
+    return this.request('/feedbacks', {
+      method: 'POST',
+      body: JSON.stringify(feedbackData),
+    });
+  }
+
+  async getFeedbacks(params?: { agency_id?: string; vehicle_id?: string; booking_id?: string }) {
+    const query = new URLSearchParams();
+    if (params?.agency_id) query.append('agency_id', params.agency_id);
+    if (params?.vehicle_id) query.append('vehicle_id', params.vehicle_id);
+    if (params?.booking_id) query.append('booking_id', params.booking_id);
+
+    const endpoint = query.toString() ? `/feedbacks?${query.toString()}` : '/feedbacks';
+    return this.request(endpoint, { method: 'GET' }, false);
   }
 
   // Payment endpoints (Razorpay)
@@ -418,6 +471,10 @@ class APIClient {
     return this.request(`/agencies/${agencyId}`, { method: 'GET' }, false);
   }
 
+  async getMyAgency() {
+    return this.request('/agencies/me', { method: 'GET' });
+  }
+
   async createAgency(agencyData: any) {
     return this.request('/agencies', {
       method: 'POST',
@@ -446,6 +503,32 @@ class APIClient {
 
   async verifyKYC(kycId: string, verificationData: any): Promise<any> {
     return this.request(`/kyc/verify/${kycId}`, {
+      method: 'PUT',
+      body: JSON.stringify(verificationData),
+    });
+  }
+
+  // Agency KYC endpoints
+  async getMyAgencyKYC() {
+    return this.request('/agency-kyc/me', { method: 'GET' });
+  }
+
+  async upsertAgencyKYC(kycData: any) {
+    return this.request('/agency-kyc', {
+      method: 'POST',
+      body: JSON.stringify(kycData),
+    });
+  }
+
+  async updateAgencyKYC(kycId: string, kycData: any) {
+    return this.request(`/agency-kyc/${kycId}`, {
+      method: 'PUT',
+      body: JSON.stringify(kycData),
+    });
+  }
+
+  async verifyAgencyKYC(kycId: string, verificationData: any) {
+    return this.request(`/agency-kyc/${kycId}/verify`, {
       method: 'PUT',
       body: JSON.stringify(verificationData),
     });
@@ -484,6 +567,31 @@ class APIClient {
       `/agencies/earnings${query}`,
       { method: 'GET' },
     );
+  }
+
+  // Favorites endpoints
+  async addFavorite(vehicleId: string) {
+    return this.request(`/vehicles/${vehicleId}/favorite`, {
+      method: 'POST',
+    });
+  }
+
+  async removeFavorite(vehicleId: string) {
+    return this.request(`/vehicles/${vehicleId}/favorite`, {
+      method: 'DELETE',
+    });
+  }
+
+  async getFavorites(params?: {
+    page?: number;
+    per_page?: number;
+  }) {
+    const queryString = new URLSearchParams();
+    if (params?.page) queryString.append('page', params.page.toString());
+    if (params?.per_page) queryString.append('per_page', params.per_page.toString());
+    queryString.append('favorite', '1');
+
+    return this.request(`/vehicles?${queryString.toString()}`, { method: 'GET' });
   }
 }
 

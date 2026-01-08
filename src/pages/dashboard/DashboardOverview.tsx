@@ -155,26 +155,26 @@ export default function DashboardOverview() {
   return (
     <DashboardLayout title="Available Vehicles" description="Browse and book vehicles near you">
       {/* Search Bar Section */}
-      <div className="rounded-xl border border-border bg-card p-4 shadow-card mb-6">
-        <div className="flex flex-col lg:flex-row gap-4">
+      <div className="rounded-lg border border-border bg-card p-3 shadow-card mb-4">
+        <div className="flex flex-col lg:flex-row gap-3">
           {/* City Select with Location Button */}
-          <div className="flex-1 min-w-[180px]">
-            <label className="text-xs text-muted-foreground mb-1 block">City</label>
-            <div className="flex gap-2">
+          <div className="flex-1 min-w-[160px]">
+            <label className="text-[10px] text-muted-foreground mb-0.5 block">City</label>
+            <div className="flex gap-1.5">
               <Popover open={isCityPickerOpen} onOpenChange={setIsCityPickerOpen}>
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
                     role="combobox"
-                    className="h-10 flex-1 justify-between"
+                    className="h-8 flex-1 justify-between text-xs"
                   >
-                    <span className="flex items-center gap-2 truncate">
-                      <MapPin className="h-4 w-4 text-primary" />
+                    <span className="flex items-center gap-1.5 truncate">
+                      <MapPin className="h-3.5 w-3.5 text-primary" />
                       <span className="truncate">
                         {selectedCity || 'All cities'}
                       </span>
                     </span>
-                    <ChevronsUpDown className="h-4 w-4 opacity-50" />
+                    <ChevronsUpDown className="h-3.5 w-3.5 opacity-50" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-[280px] p-0" align="start">
@@ -227,27 +227,27 @@ export default function DashboardOverview() {
               <Button
                 variant="outline"
                 size="icon"
-                className="h-10 w-10 shrink-0"
+                className="h-8 w-8 shrink-0"
                 onClick={handleGetCurrentLocation}
                 disabled={isLocating}
                 title="Use current location"
               >
                 {isLocating ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
                 ) : (
-                  <LocateFixed className="h-4 w-4 text-primary" />
+                  <LocateFixed className="h-3.5 w-3.5 text-primary" />
                 )}
               </Button>
             </div>
           </div>
 
           {/* Pickup Date */}
-          <div className="flex-1 min-w-[160px]">
-            <label className="text-xs text-muted-foreground mb-1 block">Pickup Date & Time</label>
+          <div className="flex-1 min-w-[140px]">
+            <label className="text-[10px] text-muted-foreground mb-0.5 block">Pickup Date & Time</label>
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="w-full h-10 justify-start text-left font-normal">
-                  <CalendarIcon className="h-4 w-4 mr-2 text-primary" />
+                <Button variant="outline" className="w-full h-8 justify-start text-left font-normal text-xs">
+                  <CalendarIcon className="h-3.5 w-3.5 mr-1.5 text-primary" />
                   {format(pickupDate, 'MMM dd, yyyy')}
                 </Button>
               </PopoverTrigger>
@@ -264,12 +264,12 @@ export default function DashboardOverview() {
           </div>
 
           {/* Dropoff Date */}
-          <div className="flex-1 min-w-[160px]">
-            <label className="text-xs text-muted-foreground mb-1 block">Dropoff Date & Time</label>
+          <div className="flex-1 min-w-[140px]">
+            <label className="text-[10px] text-muted-foreground mb-0.5 block">Dropoff Date & Time</label>
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="w-full h-10 justify-start text-left font-normal">
-                  <CalendarIcon className="h-4 w-4 mr-2 text-primary" />
+                <Button variant="outline" className="w-full h-8 justify-start text-left font-normal text-xs">
+                  <CalendarIcon className="h-3.5 w-3.5 mr-1.5 text-primary" />
                   {format(dropoffDate, 'MMM dd, yyyy')}
                 </Button>
               </PopoverTrigger>
@@ -287,34 +287,34 @@ export default function DashboardOverview() {
 
           {/* Search Button */}
           <div className="flex items-end">
-            <Button className="h-10 px-8 bg-primary hover:bg-primary/90">
-              <Search className="h-4 w-4 mr-2" />
+            <Button className="h-8 px-5 bg-primary hover:bg-primary/90 text-xs">
+              <Search className="h-3.5 w-3.5 mr-1.5" />
               Search
             </Button>
           </div>
         </div>
 
         {/* Filter Options Row */}
-        <div className="flex flex-wrap items-center gap-3 mt-4 pt-4 border-t border-border">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <SlidersHorizontal className="h-4 w-4" />
+        <div className="flex flex-wrap items-center gap-2 mt-3 pt-3 border-t border-border">
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <SlidersHorizontal className="h-3.5 w-3.5" />
             <span className="font-medium">Filters:</span>
           </div>
 
           {/* Search Input */}
-          <div className="relative flex-1 min-w-[200px] max-w-xs">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <div className="relative flex-1 min-w-[150px] max-w-xs">
+            <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
             <Input
               placeholder="Search vehicles..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 h-9"
+              className="pl-7 h-7 text-xs"
             />
           </div>
 
           {/* Vehicle Type */}
           <Select value={vehicleType} onValueChange={setVehicleType}>
-            <SelectTrigger className="w-[130px] h-9">
+            <SelectTrigger className="w-[110px] h-7 text-xs">
               <SelectValue placeholder="Vehicle Type" />
             </SelectTrigger>
             <SelectContent>
@@ -328,7 +328,7 @@ export default function DashboardOverview() {
 
           {/* Transmission */}
           <Select value={transmission} onValueChange={setTransmission}>
-            <SelectTrigger className="w-[130px] h-9">
+            <SelectTrigger className="w-[100px] h-7 text-xs">
               <SelectValue placeholder="Transmission" />
             </SelectTrigger>
             <SelectContent>
@@ -342,7 +342,7 @@ export default function DashboardOverview() {
 
           {/* Fuel Type */}
           <Select value={fuelType} onValueChange={setFuelType}>
-            <SelectTrigger className="w-[120px] h-9">
+            <SelectTrigger className="w-[90px] h-7 text-xs">
               <SelectValue placeholder="Fuel Type" />
             </SelectTrigger>
             <SelectContent>
@@ -357,8 +357,8 @@ export default function DashboardOverview() {
       </div>
 
       {/* Results Count */}
-      <div className="flex items-center justify-between mb-4">
-        <p className="text-sm text-muted-foreground">
+      <div className="flex items-center justify-between mb-3">
+        <p className="text-xs text-muted-foreground">
           {isLoading ? 'Loading vehicles...' : (
             <>
               Showing <span className="font-semibold text-foreground">{filteredVehicles.length}</span> vehicles in{' '}
@@ -366,8 +366,8 @@ export default function DashboardOverview() {
             </>
           )}
         </p>
-        <div className="flex gap-2">
-          <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isLoading}>
+        <div className="flex gap-1.5">
+          <Button variant="outline" size="sm" className="h-7 text-xs" onClick={() => refetch()} disabled={isLoading}>
             Refresh
           </Button>
         </div>
@@ -375,30 +375,30 @@ export default function DashboardOverview() {
 
       {/* Vehicle Grid */}
       {isError && (
-        <div className="rounded-xl border border-border bg-card p-6 text-center text-sm text-destructive mb-4">
+        <div className="rounded-lg border border-border bg-card p-4 text-center text-xs text-destructive mb-3">
           Unable to load vehicles. Please refresh.
         </div>
       )}
 
       {isLoading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
           {Array.from({ length: 8 }).map((_, idx) => (
             <VehicleCardSkeleton key={idx} />
           ))}
         </div>
       ) : filteredVehicles.length === 0 ? (
-        <div className="rounded-xl border border-border bg-card p-8 text-center text-muted-foreground">
+        <div className="rounded-lg border border-border bg-card p-6 text-center text-sm text-muted-foreground">
           No vehicles match your filters. Try adjusting search or vehicle category.
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
           {filteredVehicles.map((vehicle: any) => {
             const isBooked = vehicle.isAvailable === false || (vehicle.status || '').toLowerCase() === 'booked';
             return (
               <div
                 key={vehicle.id}
                 className={cn(
-                  'rounded-xl border border-border bg-card shadow-card overflow-hidden hover:shadow-lg transition-shadow',
+                  'rounded-lg border border-border bg-card shadow-card overflow-hidden hover:shadow-lg transition-shadow',
                   isBooked ? 'cursor-not-allowed opacity-80' : 'cursor-pointer'
                 )}
                 onClick={() => !isBooked && handleViewDetails(vehicle)}
@@ -409,11 +409,11 @@ export default function DashboardOverview() {
               <img
                 src={vehicle.image || vehicle.imageUrl || 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop'}
                 alt={vehicle.name}
-                className="w-full h-36 object-cover"
+                className="w-full h-28 object-cover"
               />
               {isBooked && (
-                <div className="absolute top-3 left-1/2 -translate-x-1/2 pointer-events-none">
-                  <div className="bg-pink-600 text-white uppercase font-bold px-4 py-1 rounded">
+                <div className="absolute top-2 left-1/2 -translate-x-1/2 pointer-events-none">
+                  <div className="bg-pink-600 text-white uppercase font-bold px-2 py-0.5 rounded text-[10px]">
                     Out of Stock
                   </div>
                 </div>
@@ -421,117 +421,71 @@ export default function DashboardOverview() {
               {/* Rating Badge */}
               <div
                 className={cn(
-                  'absolute top-2 left-2 flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold text-white',
+                  'absolute top-1.5 left-1.5 flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-semibold text-white',
                   getRatingColor(vehicle.rating || 4.5)
                 )}
               >
-                <Star className="h-3 w-3 fill-current" />
-                {(vehicle.rating || 4.5).toFixed(1)} ({vehicle.reviewCount || vehicle.reviews || 0} reviews)
-              </div>
-
-              {/* Top Right Badges */}
-              <div className="absolute top-2 right-2 flex flex-col gap-1">
-                {vehicle.pickupAvailable && (
-                  <Badge className="bg-blue-500 hover:bg-blue-600 text-[10px] px-1.5 py-0.5">
-                    Pay at Pickup Available
-                  </Badge>
-                )}
-                {vehicle.homeDelivery && (
-                  <Badge className="bg-green-500 hover:bg-green-600 text-[10px] px-1.5 py-0.5">
-                    <Truck className="h-3 w-3 mr-1" />
-                    Home Delivery
-                  </Badge>
-                )}
+                <Star className="h-2.5 w-2.5 fill-current" />
+                {(vehicle.rating || 4.5).toFixed(1)} ({vehicle.reviewCount || vehicle.reviews || 0})
               </div>
 
               {/* Trips Badge */}
-              <div className="absolute bottom-2 right-2 bg-yellow-400 text-yellow-900 text-xs font-bold px-2 py-0.5 rounded">
+              <div className="absolute bottom-1.5 right-1.5 bg-yellow-400 text-yellow-900 text-[10px] font-bold px-1.5 py-0.5 rounded">
                 {vehicle.trips || 0} Trips
               </div>
             </div>
 
             {/* Content */}
-            <div className="p-4">
-              <div className="flex items-start justify-between mb-2">
-                <h3 className="font-bold text-foreground">{vehicle.name}</h3>
-                <Button variant="link" className="h-auto p-0 text-primary text-xs">
+            <div className="p-2">
+              <div className="flex items-start justify-between gap-1 mb-1.5">
+                <h3 className="font-semibold text-xs text-foreground line-clamp-2 leading-tight">{vehicle.name}</h3>
+                <Button variant="link" className="h-auto p-0 text-primary text-[10px] shrink-0 hidden sm:block">
                   View All Packages
                 </Button>
               </div>
 
               {/* Specs */}
-              <div className="flex items-center gap-3 text-xs text-muted-foreground mb-3 flex-wrap">
-                <span className="flex items-center gap-1">
-                  <Settings2 className="h-3 w-3" />
-                  {vehicle.transmission || 'Manual'}
+              <div className="flex items-center gap-2 text-[10px] text-muted-foreground mb-2">
+                <span className="flex items-center gap-0.5">
+                  <Settings2 className="h-2.5 w-2.5" />
+                  {(vehicle.transmission || 'manual').substring(0, 4)}
                 </span>
-                <span className="flex items-center gap-1">
-                  <Users className="h-3 w-3" />
-                  {(vehicle.seatingCapacity || vehicle.seats || 4)} Seater
+                <span className="flex items-center gap-0.5">
+                  <Users className="h-2.5 w-2.5" />
+                  {(vehicle.seatingCapacity || vehicle.seats || 2)}
                 </span>
-                <span className="flex items-center gap-1">
-                  <Fuel className="h-3 w-3" />
-                  {vehicle.fuelType || 'Petrol'}
+                <span className="flex items-center gap-0.5">
+                  <Fuel className="h-2.5 w-2.5" />
+                  {(vehicle.fuelType || 'Petrol').substring(0, 3)}
                 </span>
-              </div>
-
-              {/* Location Dropdown */}
-              <div className="mb-3">
-                <p className="text-xs text-muted-foreground mb-1">Available at</p>
-                <Select defaultValue={vehicle.location || vehicle.locations?.[0]}>
-                  <SelectTrigger className="h-8 text-xs">
-                    <SelectValue placeholder="Select location" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {(vehicle.locations || [vehicle.location || 'Pickup shared post booking']).map((loc: string) => (
-                      <SelectItem key={loc} value={loc} className="text-xs">
-                        {loc}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
               </div>
 
               {/* Price Section */}
-              <div className="flex items-end justify-between mb-3">
+              <div className="flex items-end justify-between gap-1">
                 <div>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-xl font-bold text-primary">₹{(vehicle.pricePerDay || vehicle.dailyRate || 0).toLocaleString()}</span>
-                    <span className="text-xs text-muted-foreground">(incl. Tax)</span>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-sm font-bold text-primary">₹{(vehicle.pricePerDay || vehicle.dailyRate || 0).toLocaleString()}</span>
+                    <span className="text-[9px] text-muted-foreground hidden sm:inline">/day</span>
                   </div>
-                  {vehicle.originalPrice && vehicle.discount && (
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs text-muted-foreground line-through">
-                        ₹{vehicle.originalPrice}
-                      </span>
-                      <span className="text-xs text-green-500 font-semibold">
-                        ({vehicle.discount}% off)
-                      </span>
-                    </div>
-                  )}
-                  {vehicle.kmLimit && vehicle.extraKm && (
-                    <p className="text-[10px] text-muted-foreground mt-1">
-                      {vehicle.kmLimit} • Extra {vehicle.extraKm}
-                    </p>
-                  )}
-                  <p className="text-[10px] text-muted-foreground">Fuel Excluded</p>
+                  <p className="text-[9px] text-muted-foreground">Fuel Excl.</p>
                 </div>
                 <Button
                   size="sm"
                   className={cn(
+                    'h-6 text-[10px] px-2',
                     isBooked ? 'bg-gray-200 text-muted-foreground cursor-not-allowed' : 'bg-primary hover:bg-primary/90'
                   )}
                   onClick={(e) => { e.stopPropagation(); if (!isBooked) handleViewDetails(vehicle); }}
                   disabled={isBooked}
                 >
-                  View Details
+                  View
                 </Button>
               </div>
 
-              {/* Footer */}
-              <div className="flex items-center justify-between pt-3 border-t border-border text-xs text-muted-foreground">
+              {/* Footer - hidden on small screens */}
+              <div className="hidden sm:flex items-center justify-between pt-2 mt-2 border-t border-border text-[10px] text-muted-foreground">
                 <span>Deposit: ₹{(vehicle.deposit || vehicle.securityDeposit || 0).toLocaleString()}</span>
-                <span>Make Year: {vehicle.year || new Date().getFullYear()}</span>
+                <span>{vehicle.year || new Date().getFullYear()}</span>
               </div>
                 </div>
               </div>

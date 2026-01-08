@@ -119,7 +119,6 @@ export default function KYCVerificationPage() {
       formData.append('docType', 'aadhaar');
       
       const response = await apiClient.post<any>('/kyc/upload', formData);
-      console.log('Aadhaar upload response:', response);
       
       toast.success('Aadhaar photo uploaded');
       if (response.documentsUploaded) {
@@ -149,7 +148,6 @@ export default function KYCVerificationPage() {
       formData.append('docType', 'dl');
       
       const response = await apiClient.post<any>('/kyc/upload', formData);
-      console.log('DL upload response:', response);
       
       toast.success('Driving License photo uploaded');
       if (response.documentsUploaded) {
@@ -179,7 +177,6 @@ export default function KYCVerificationPage() {
       formData.append('docType', 'selfie');
       
       const response = await apiClient.post<any>('/kyc/upload', formData);
-      console.log('Selfie upload response:', response);
       
       toast.success('KYC verification submitted');
       setDocumentsUploaded(true);

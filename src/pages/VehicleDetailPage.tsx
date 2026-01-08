@@ -65,7 +65,6 @@ export default function VehicleDetailPage() {
   }
 
   const handleBookNow = () => {
-    console.log('Vehicle:', vehicle);
     navigate(`/new-booking/${vehicle.id}`);
   };
 

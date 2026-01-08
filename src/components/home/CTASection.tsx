@@ -11,7 +11,7 @@ const benefits = [
 
 export function CTASection() {
   return (
-    <section className="py-16 md:py-24 bg-gradient-primary relative overflow-hidden">
+    <section className="py-8 sm:py-10 md:py-14 bg-gradient-primary relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
@@ -20,46 +20,46 @@ export function CTASection() {
       </div>
 
       <div className="container relative">
-        <div className="mx-auto max-w-3xl text-center">
-          <div className="inline-flex items-center gap-2 rounded-full bg-primary-foreground/20 backdrop-blur-sm px-4 py-2 text-sm font-medium text-primary-foreground mb-6">
-            <Store className="h-4 w-4" />
+        <div className="mx-auto max-w-2xl text-center px-2">
+          <div className="inline-flex items-center gap-1 sm:gap-1.5 rounded-full bg-primary-foreground/20 backdrop-blur-sm px-2 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-xs font-medium text-primary-foreground mb-3 sm:mb-4">
+            <Store className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
             For Vehicle Owners & Agencies
           </div>
 
-          <h2 className="text-3xl md:text-4xl font-bold text-primary-foreground">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-primary-foreground">
             Own a Rental Business?
           </h2>
-          <p className="mt-4 text-lg text-primary-foreground/90">
+          <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm text-primary-foreground/90">
             Join India's fastest-growing vehicle rental marketplace. List your bikes and cars to reach thousands of customers.
           </p>
 
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
+          <div className="mt-4 sm:mt-5 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:justify-center sm:gap-3">
             {benefits.map((benefit) => (
               <div
                 key={benefit}
-                className="flex items-center gap-2 text-sm text-primary-foreground/90"
+                className="flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-xs text-primary-foreground/90"
               >
-                <CheckCircle className="h-4 w-4 text-primary-foreground" />
-                {benefit}
+                <CheckCircle className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-primary-foreground flex-shrink-0" />
+                <span className="truncate">{benefit}</span>
               </div>
             ))}
           </div>
 
-          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="mt-5 sm:mt-6 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
             <Link to="/agency/register">
               <Button
-                size="xl"
-                className="gap-2 bg-primary-foreground text-primary hover:bg-primary-foreground/90"
+                size="default"
+                className="gap-1.5 bg-primary-foreground text-primary hover:bg-primary-foreground/90 text-xs sm:text-sm w-full sm:w-auto"
               >
                 Register Your Agency
-                <ArrowRight className="h-5 w-5" />
+                <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               </Button>
             </Link>
             <Link to="/how-it-works">
               <Button
                 variant="outline"
-                size="xl"
-                className="gap-2 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 bg-transparent"
+                size="default"
+                className="gap-1.5 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 bg-transparent text-xs sm:text-sm w-full sm:w-auto"
               >
                 Learn More
               </Button>

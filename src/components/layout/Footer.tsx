@@ -11,13 +11,13 @@ function FooterLogo() {
   return (
     <div className="relative">
       {!isLoaded && (
-        <div className="skeleton-logo h-14 w-32 absolute inset-0" />
+        <div className="skeleton-logo h-5 w-20 absolute inset-0" />
       )}
       <img 
         src={APP_LOGO_PATH} 
         alt="RentKaro" 
         className={cn(
-          "h-14 w-auto hover-bounce",
+          "h-5 w-auto hover-bounce",
           isLoaded ? "animate-fade-in" : "opacity-0"
         )}
         onLoad={() => setIsLoaded(true)}
@@ -61,39 +61,39 @@ const socialLinks = [
 export function Footer() {
   return (
     <footer className="border-t border-border bg-muted/30">
-      <div className="container py-12 md:py-16">
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-6">
+      <div className="container py-6 sm:py-8 md:py-10">
+        <div className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 lg:grid-cols-6">
           {/* Brand */}
-          <div className="lg:col-span-2">
+          <div className="col-span-2 md:col-span-3 lg:col-span-2">
             <Link to="/" className="flex items-center gap-2">
               <FooterLogo />
             </Link>
-            <p className="mt-4 text-sm text-muted-foreground max-w-xs">
+            <p className="mt-2 sm:mt-3 text-[11px] sm:text-xs text-muted-foreground max-w-xs leading-relaxed">
               India's trusted vehicle rental marketplace. Rent bikes and cars from verified agencies across major cities.
             </p>
-            <div className="mt-6 space-y-3">
-              <a href="tel:+911234567890" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
-                <Phone className="h-4 w-4 text-primary" />
+            <div className="mt-3 sm:mt-4 space-y-1.5 sm:space-y-2">
+              <a href="tel:+911234567890" className="flex items-center gap-1.5 text-[11px] sm:text-xs text-muted-foreground hover:text-primary transition-colors">
+                <Phone className="h-3 sm:h-3.5 w-3 sm:w-3.5 text-primary flex-shrink-0" />
                 +91 12345 67890
               </a>
-              <a href="mailto:support@rentkaro.in" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
-                <Mail className="h-4 w-4 text-primary" />
+              <a href="mailto:support@rentkaro.in" className="flex items-center gap-1.5 text-[11px] sm:text-xs text-muted-foreground hover:text-primary transition-colors">
+                <Mail className="h-3 sm:h-3.5 w-3 sm:w-3.5 text-primary flex-shrink-0" />
                 support@rentkaro.in
               </a>
-              <p className="flex items-center gap-2 text-sm text-muted-foreground">
-                <MapPin className="h-4 w-4 text-primary" />
-                Bangalore, Karnataka, India
+              <p className="flex items-center gap-1.5 text-[11px] sm:text-xs text-muted-foreground">
+                <MapPin className="h-3 sm:h-3.5 w-3 sm:w-3.5 text-primary flex-shrink-0" />
+                Bangalore, Karnataka
               </p>
             </div>
           </div>
 
-          {/* Links */}
+          {/* Links - 2 columns on mobile */}
           <div>
-            <h3 className="font-semibold text-foreground">Company</h3>
-            <ul className="mt-4 space-y-3">
+            <h3 className="text-[10px] sm:text-xs font-semibold text-foreground uppercase tracking-wide">Company</h3>
+            <ul className="mt-2 sm:mt-3 space-y-1.5 sm:space-y-2">
               {footerLinks.company.map((link) => (
                 <li key={link.name}>
-                  <Link to={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  <Link to={link.href} className="text-[11px] sm:text-xs text-muted-foreground hover:text-primary transition-colors">
                     {link.name}
                   </Link>
                 </li>
@@ -102,11 +102,11 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-semibold text-foreground">Support</h3>
-            <ul className="mt-4 space-y-3">
+            <h3 className="text-[10px] sm:text-xs font-semibold text-foreground uppercase tracking-wide">Support</h3>
+            <ul className="mt-2 sm:mt-3 space-y-1.5 sm:space-y-2">
               {footerLinks.support.map((link) => (
                 <li key={link.name}>
-                  <Link to={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  <Link to={link.href} className="text-[11px] sm:text-xs text-muted-foreground hover:text-primary transition-colors">
                     {link.name}
                   </Link>
                 </li>
@@ -115,11 +115,11 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-semibold text-foreground">Legal</h3>
-            <ul className="mt-4 space-y-3">
+            <h3 className="text-[10px] sm:text-xs font-semibold text-foreground uppercase tracking-wide">Legal</h3>
+            <ul className="mt-2 sm:mt-3 space-y-1.5 sm:space-y-2">
               {footerLinks.legal.map((link) => (
                 <li key={link.name}>
-                  <Link to={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  <Link to={link.href} className="text-[11px] sm:text-xs text-muted-foreground hover:text-primary transition-colors">
                     {link.name}
                   </Link>
                 </li>
@@ -128,11 +128,11 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-semibold text-foreground">For Agencies</h3>
-            <ul className="mt-4 space-y-3">
+            <h3 className="text-[10px] sm:text-xs font-semibold text-foreground uppercase tracking-wide">Agencies</h3>
+            <ul className="mt-2 sm:mt-3 space-y-1.5 sm:space-y-2">
               {footerLinks.forAgencies.map((link) => (
                 <li key={link.name}>
-                  <Link to={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  <Link to={link.href} className="text-[11px] sm:text-xs text-muted-foreground hover:text-primary transition-colors">
                     {link.name}
                   </Link>
                 </li>
@@ -142,8 +142,8 @@ export function Footer() {
         </div>
 
         {/* Newsletter */}
-        <div className="mt-12 border-t border-border pt-8">
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-6 sm:mt-8 border-t border-border pt-4 sm:pt-6">
+          <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
             <div className="lg:col-span-2">
               <NewsletterForm />
             </div>
@@ -151,19 +151,19 @@ export function Footer() {
         </div>
 
         {/* Bottom */}
-        <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 md:flex-row">
-          <p className="text-sm text-muted-foreground">
+        <div className="mt-4 sm:mt-6 flex flex-col items-center justify-between gap-2 sm:gap-3 border-t border-border pt-4 sm:pt-6 md:flex-row">
+          <p className="text-[10px] sm:text-xs text-muted-foreground text-center md:text-left">
             © {new Date().getFullYear()} RentKaro. All rights reserved.
           </p>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-3">
             {socialLinks.map((social) => (
               <a
                 key={social.name}
                 href={social.href}
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-muted text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
+                className="flex h-6 sm:h-7 w-6 sm:w-7 items-center justify-center rounded-full bg-muted text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
                 aria-label={social.name}
               >
-                <social.icon className="h-4 w-4" />
+                <social.icon className="h-3 sm:h-3.5 w-3 sm:w-3.5" />
               </a>
             ))}
           </div>

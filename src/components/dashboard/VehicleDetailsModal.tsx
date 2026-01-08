@@ -24,13 +24,11 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { 
-  Fuel, Users, Settings2, Calendar, Info, 
-  CreditCard, Smartphone, Building2, 
-  Loader2, ShieldCheck, MapPin, Gauge, Activity, 
+  Fuel, Users, Settings2,
+  Loader2, MapPin, Gauge, Activity,
   Banknote, AlertCircle, Clock, Timer, Scale
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useNavigate } from "react-router-dom";
 import { toast } from 'sonner';
 import { useVehicle } from '@/hooks/useVehicles';
 import { apiClient } from '@/services/api';
@@ -57,6 +55,14 @@ interface Vehicle {
   location?: string;
   mileage?: string;
   agencyId?: string;
+  isFavorite?: boolean;
+  displacement?: string;
+  topSpeed?: string;
+  fuelCapacity?: string;
+  weight?: string;
+  timings?: string;
+  excessPerKm?: number;
+  lateFeePerHr?: number;
   agencyLocation?: {
     address?: string;
     city?: string;
@@ -114,17 +120,17 @@ const formatCurrency = (amount: number) => `₹${Math.max(0, amount || 0).toLoca
 
 // --- Main Component ---
 export function VehicleDetailsModal({ vehicle, isOpen, onClose }: VehicleDetailsModalProps) {
-  const navigate = useNavigate();
   const [paymentOption, setPaymentOption] = useState<'partial' | 'full'>('partial');
   const [packageType, setPackageType] = useState('daily');
   const [isProcessing, setIsProcessing] = useState(false);
   const [availability, setAvailability] = useState<AvailabilityResponse | null>(null);
   const [isCheckingAvailability, setIsCheckingAvailability] = useState(false);
+  const [countdown, setCountdown] = useState(120); // 2 minutes
 
   const brandLogo = getAppLogoUrl();
 
   const vehicleId = vehicle?.id || '';
-  const { data: fetchedVehicle, isFetching } = useVehicle(vehicleId);
+  const { data: fetchedVehicle } = useVehicle(vehicleId);
 
   const bookingStartDate = useMemo(() => new Date(), [vehicleId]);
   const bookingEndDate = useMemo(
@@ -144,11 +150,11 @@ export function VehicleDetailsModal({ vehicle, isOpen, onClose }: VehicleDetails
     const fetchAvailability = async () => {
       setIsCheckingAvailability(true);
       try {
-        const response: AvailabilityResponse = await apiClient.checkVehicleAvailability(
+        const response = await apiClient.checkVehicleAvailability(
           vehicleId,
           bookingStartIso,
           bookingEndIso
-        );
+        ) as AvailabilityResponse;
         if (!isCancelled) {
           setAvailability(response);
         }
@@ -170,6 +176,37 @@ export function VehicleDetailsModal({ vehicle, isOpen, onClose }: VehicleDetails
     };
   }, [vehicleId, bookingEndIso, bookingStartIso]);
 
+  useEffect(() => {
+    if (!isOpen) {
+      setCountdown(120);
+      return;
+    }
+
+    setCountdown(120);
+    const interval = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          onClose();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [isOpen, onClose]);
+
+  const formatCountdown = (seconds: number) => {
+    const m = Math.floor(seconds / 60)
+      .toString()
+      .padStart(2, '0');
+    const s = (seconds % 60)
+      .toString()
+      .padStart(2, '0');
+    return `${m}:${s}`;
+  };
+
   if (!vehicle) return null;
 
   const vehicleData = (fetchedVehicle || vehicle) as Vehicle;
@@ -180,14 +217,14 @@ export function VehicleDetailsModal({ vehicle, isOpen, onClose }: VehicleDetails
   const seats = vehicleData.seatingCapacity ?? vehicleData.seats ?? 2;
   const primaryImage = vehicleData.image || vehicleData.imageUrl || 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop';
 
-  const timings = '7:00 AM - 10:00 PM';
+  const timings = vehicleData.timings || '7:00 AM - 10:00 PM';
   const distanceLimit = vehicleData.mileage ? `${vehicleData.mileage}` : 'Unlimited';
-  const excessCharge = '₹4/km';
-  const latePenalty = '₹100/hr';
-  const fuelCapacity = '–';
-  const topSpeed = '–';
-  const displacement = '–';
-  const weight = '–';
+  const excessCharge = vehicleData.excessPerKm ? `₹${vehicleData.excessPerKm}/km` : '₹4/km';
+  const latePenalty = vehicleData.lateFeePerHr ? `₹${vehicleData.lateFeePerHr}/hr` : '₹100/hr';
+  const fuelCapacity = vehicleData.fuelCapacity || '–';
+  const topSpeed = vehicleData.topSpeed || '–';
+  const displacement = vehicleData.displacement || '–';
+  const weight = vehicleData.weight || '–';
   const kmsDriven = vehicleData.mileage || '—';
   const pickupLocation = vehicleData.location || (vehicleData as any).city || 'Pickup location shared after confirmation';
   const agencyLocation = (vehicleData as any).agencyLocation || (vehicleData as any).agency || null;
@@ -362,7 +399,7 @@ export function VehicleDetailsModal({ vehicle, isOpen, onClose }: VehicleDetails
           <div className="flex items-center justify-between">
             <DialogTitle className="text-lg">Complete Your Booking</DialogTitle>
             <Badge variant="secondary" className="bg-orange-100 text-orange-700 hover:bg-orange-100 text-xs">
-              <Clock className="h-3 w-3 mr-1" /> Finish in 05:00
+              <Clock className="h-3 w-3 mr-1" /> Finish in {formatCountdown(countdown)}
             </Badge>
           </div>
         </DialogHeader>

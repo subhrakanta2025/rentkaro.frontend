@@ -168,6 +168,14 @@ apiClient.getOwnerVehicles(ownerId)
 
 ### 4. Booking APIs
 
+#### Get My Bookings
+```typescript
+apiClient.getMyBookings({ status?, startDate?, endDate? })
+```
+- **Method**: GET `/bookings/me`
+- **Auth**: Required
+- **Returns**: Current user's bookings (customer or agency)
+
 #### Get Bookings
 ```typescript
 apiClient.getBookings(status?)
@@ -217,6 +225,14 @@ apiClient.cancelBooking(bookingId)
 ---
 
 ### 5. Agency APIs
+
+#### Get My Agency
+```typescript
+apiClient.getMyAgency()
+```
+- **Method**: GET `/agencies/me`
+- **Auth**: Required
+- **Returns**: Current user's agency profile
 
 #### Get Agencies
 ```typescript
@@ -271,6 +287,72 @@ apiClient.verifyKYC(kycId, verificationData)
 ```
 - **Method**: PUT `/kyc/verify/{kycId}`
 - **Auth**: Required (Admin only)
+
+---
+
+### 6a. Agency KYC APIs
+
+#### Get My Agency KYC
+```typescript
+apiClient.getMyAgencyKYC()
+```
+- **Method**: GET `/agency-kyc/me`
+- **Auth**: Required
+- **Returns**: Current agency's KYC record
+
+#### Create/Update Agency KYC
+```typescript
+apiClient.upsertAgencyKYC(kycData)
+```
+- **Method**: POST `/agency-kyc`
+- **Auth**: Required
+- **Body**: panNumber, gstNumber, licenseNumber, document URLs, verificationStatus
+
+#### Update Agency KYC
+```typescript
+apiClient.updateAgencyKYC(kycId, kycData)
+```
+- **Method**: PUT `/agency-kyc/{kycId}`
+- **Auth**: Required
+
+#### Verify Agency KYC (Admin)
+```typescript
+apiClient.verifyAgencyKYC(kycId, verificationData)
+```
+- **Method**: PUT `/agency-kyc/{kycId}/verify`
+- **Auth**: Required (Admin only)
+- **Body**: panVerified, gstVerified, licenseVerified, verificationStatus
+
+---
+
+### 7. Upload APIs
+
+#### Upload Files
+```typescript
+apiClient.uploadFiles([file1, file2])
+```
+- **Method**: POST `/uploads`
+- **Auth**: Required
+- **Body**: `multipart/form-data` with `files`
+- **Returns**: `{ urls: string[] }` public URLs
+
+---
+
+### 8. Feedback APIs
+
+#### Submit Feedback
+```typescript
+apiClient.submitFeedback({ bookingId, rating, comment })
+```
+- **Method**: POST `/feedbacks`
+- **Auth**: Required
+
+#### List Feedbacks
+```typescript
+apiClient.getFeedbacks({ agency_id?, vehicle_id?, booking_id? })
+```
+- **Method**: GET `/feedbacks`
+- **Auth**: Optional (public list)
 
 ---
 

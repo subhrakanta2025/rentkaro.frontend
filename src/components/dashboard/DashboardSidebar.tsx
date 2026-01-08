@@ -63,20 +63,20 @@ export function DashboardSidebar() {
 
   return (
     <Sidebar collapsible="icon" className="border-r border-border">
-      <SidebarHeader className="border-b border-border h-20 flex items-center justify-center p-0">
+      <SidebarHeader className="border-b border-border h-12 flex items-center justify-center p-0">
         <Link to={canListVehicles ? '/agency/dashboard' : '/dashboard'} className="flex items-center gap-2">
           <img 
             src={APP_LOGO_PATH} 
             alt="RentKaro" 
             className={cn(
-              "h-20 object-contain transition-all",
-              isCollapsed ? "w-20 object-cover object-left" : "w-auto"
+              "h-10 object-contain transition-all",
+              isCollapsed ? "w-10 object-cover object-left" : "w-auto"
             )}
           />
         </Link>
       </SidebarHeader>
 
-      <SidebarContent className="px-2 py-4">
+      <SidebarContent className="px-1.5 py-2">
         {/* Main Navigation */}
         <SidebarGroup>
           <SidebarGroupContent>
@@ -224,17 +224,17 @@ export function DashboardSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-border p-4">
+      <SidebarFooter className="border-t border-border p-2">
         {!isCollapsed && (
-          <div className="flex items-center gap-3 mb-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
-              <User className="h-5 w-5 text-primary" />
+          <div className="flex items-center gap-2 mb-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
+              <User className="h-4 w-4 text-primary" />
             </div>
             <div className="flex-1 overflow-hidden">
-              <p className="text-sm font-medium text-foreground truncate">
+              <p className="text-xs font-medium text-foreground truncate">
                 {profile?.fullName || 'User'}
               </p>
-              <p className="text-xs text-muted-foreground truncate">
+              <p className="text-[10px] text-muted-foreground truncate">
                 {profile?.email}
               </p>
             </div>
@@ -244,9 +244,9 @@ export function DashboardSidebar() {
           variant="outline" 
           size="sm" 
           onClick={handleSignOut}
-          className="w-full text-destructive border-destructive/30 hover:bg-destructive/10 gap-2"
+          className="w-full text-destructive border-destructive/30 hover:bg-destructive/10 gap-2 h-8 text-xs"
         >
-          <LogOut className="h-4 w-4" />
+          <LogOut className="h-3.5 w-3.5" />
           {!isCollapsed && <span>Sign Out</span>}
         </Button>
       </SidebarFooter>

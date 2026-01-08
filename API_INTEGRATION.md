@@ -251,6 +251,28 @@ await apiClient.verifyKYC(kycId, {
 });
 ```
 
+### Uploads
+
+```typescript
+// Upload one or more files (images/pdfs) to GCS
+const { urls } = await apiClient.uploadFiles([file1, file2]);
+// Returns array of public URLs
+```
+
+### Feedbacks
+
+```typescript
+// Submit feedback for a booking
+await apiClient.submitFeedback({
+  bookingId: '<booking-id>',
+  rating: 5,
+  comment: 'Great experience!'
+});
+
+// List feedbacks (optionally filter)
+const feedbacks = await apiClient.getFeedbacks({ agency_id: '123' });
+```
+
 ## Token Management
 
 The API client automatically:
