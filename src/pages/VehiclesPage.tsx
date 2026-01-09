@@ -7,10 +7,8 @@ import { EnhancedVehicleCard } from '@/components/vehicles/EnhancedVehicleCard';
 import { VehicleCardSkeleton } from '@/components/vehicles/VehicleCardSkeleton';
 import { BookingSearchBar } from '@/components/vehicles/BookingSearchBar';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useVehicles } from '@/hooks/useVehicles';
-import { Search, Car, Bike } from 'lucide-react';
+import { Search } from 'lucide-react';
 
 export default function VehiclesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -170,7 +168,7 @@ export default function VehiclesPage() {
           {/* Vehicle Grid */}
           <div className="flex-1">
             {isLoading ? (
-              <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+              <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5">
                 {Array.from({ length: 10 }).map((_, index) => (
                   <div key={index} className="animate-fade-in" style={{ animationDelay: `${index * 50}ms` }}>
                     <VehicleCardSkeleton />
@@ -178,7 +176,7 @@ export default function VehiclesPage() {
                 ))}
               </div>
             ) : filteredVehicles.length > 0 ? (
-              <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+              <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5">
                 {filteredVehicles.map((vehicle, index) => (
                   <div
                     key={vehicle.id}
