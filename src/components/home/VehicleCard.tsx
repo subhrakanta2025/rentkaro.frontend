@@ -36,12 +36,12 @@ export function VehicleCard({ vehicle, className }: VehicleCardProps) {
     <Link
       to={`/vehicles/${vehicle.id}`}
       className={cn(
-        "group block rounded-lg bg-white border border-gray-100 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1",
+        "group h-full flex flex-col rounded-lg bg-white border border-gray-100 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1",
         className
       )}
     >
       {/* Image */}
-      <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-gray-100 to-gray-50">
+      <div className="relative aspect-[3/2] overflow-hidden bg-gradient-to-br from-gray-100 to-gray-50">
         <img
           src={vehicle.image}
           alt={vehicle.name}
@@ -75,34 +75,34 @@ export function VehicleCard({ vehicle, className }: VehicleCardProps) {
       </div>
 
       {/* Content */}
-      <div className="p-2 sm:p-3">
+      <div className="p-2 sm:p-2.5 flex-1 flex flex-col">
         {/* Header */}
-        <div className="mb-1.5 sm:mb-2">
-          <h3 className="font-semibold text-xs sm:text-sm text-gray-900 line-clamp-1 group-hover:text-primary transition-colors">
+        <div className="mb-1 sm:mb-1.5">
+          <h3 className="font-semibold text-[11px] sm:text-sm text-gray-900 line-clamp-1 group-hover:text-primary transition-colors">
             {vehicle.name}
           </h3>
-          <p className="text-[8px] sm:text-[10px] text-gray-500 font-medium mt-0.5">{vehicle.brand} • {vehicle.year}</p>
+          <p className="text-[9px] sm:text-[10px] text-gray-500 font-medium mt-0.5">{vehicle.brand} • {vehicle.year}</p>
         </div>
 
         {/* Features - Hidden on very small screens */}
-        <div className="hidden xs:flex items-center gap-1.5 sm:gap-2 mb-2 sm:mb-2.5 pb-2 sm:pb-2.5 border-b border-gray-100">
-          <span className="flex items-center gap-0.5 sm:gap-1 text-[8px] sm:text-[10px] text-gray-600">
+        <div className="hidden xs:flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2 pb-1.5 sm:pb-2 border-b border-gray-100">
+          <span className="flex items-center gap-0.5 sm:gap-1 text-[8px] sm:text-[9px] text-gray-600">
             <div className="h-4 w-4 sm:h-5 sm:w-5 rounded bg-blue-50 flex items-center justify-center">
               <Fuel className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-blue-600" />
             </div>
-            <span className="font-medium">{vehicle.fuelType}</span>
+            <span className="font-medium leading-none">{vehicle.fuelType}</span>
           </span>
-          <span className="flex items-center gap-0.5 sm:gap-1 text-[8px] sm:text-[10px] text-gray-600">
+          <span className="flex items-center gap-0.5 sm:gap-1 text-[8px] sm:text-[9px] text-gray-600">
             <div className="h-4 w-4 sm:h-5 sm:w-5 rounded bg-purple-50 flex items-center justify-center">
               <Settings2 className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-purple-600" />
             </div>
-            <span className="font-medium hidden sm:inline">{vehicle.transmission}</span>
-            <span className="font-medium sm:hidden">{vehicle.transmission === 'automatic' ? 'Auto' : 'Manual'}</span>
+            <span className="font-medium hidden sm:inline leading-none">{vehicle.transmission}</span>
+            <span className="font-medium sm:hidden leading-none">{vehicle.transmission === 'automatic' ? 'Auto' : 'Manual'}</span>
           </span>
         </div>
 
         {/* Footer - Price & Agency */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mt-auto">
           <div className="hidden sm:flex items-center gap-1.5">
             <div className="h-5 w-5 sm:h-6 sm:w-6 rounded-full overflow-hidden ring-1 ring-gray-100">
               <img
@@ -125,8 +125,8 @@ export function VehicleCard({ vehicle, className }: VehicleCardProps) {
         </div>
 
         {/* Location Tag */}
-        <div className="mt-1.5 sm:mt-2 pt-1.5 sm:pt-2 border-t border-gray-100">
-          <div className="flex items-center gap-1 text-[8px] sm:text-[10px] text-gray-500">
+        <div className="mt-1 sm:mt-1.5 pt-1 sm:pt-1.5 border-t border-gray-100">
+          <div className="flex items-center gap-1 text-[8px] sm:text-[9px] text-gray-500">
             <MapPin className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-gray-400" />
             <span className="font-medium truncate">{vehicle.location}</span>
           </div>

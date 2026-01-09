@@ -252,9 +252,9 @@ export const vehicles: Vehicle[] = [
     pricePerHour: 79,
     rating: 4.6,
     reviewCount: 145,
-    image: 'https://images.unsplash.com/photo-1568772585407-9361bd955bf3?w=600&h=400&fit=crop',
+    image: 'https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?w=800&auto=format&fit=crop&q=80',
     images: [
-      'https://images.unsplash.com/photo-1568772585407-9361bd955bf3?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?w=1200&auto=format&fit=crop&q=80',
     ],
     location: 'Connaught Place',
     city: 'Delhi',

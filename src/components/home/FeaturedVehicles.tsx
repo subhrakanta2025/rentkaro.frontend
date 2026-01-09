@@ -5,8 +5,8 @@ import { VehicleCard } from './VehicleCard';
 import { vehicles } from '@/data/vehicles';
 
 export function FeaturedVehicles() {
-  const featuredBikes = vehicles.filter((v) => v.type === 'bike').slice(0, 8);
-  const featuredCars = vehicles.filter((v) => v.type === 'car').slice(0, 8);
+  const featuredBikes = vehicles.filter((v) => v.type === 'bike').slice(0, 6);
+  const featuredCars = vehicles.filter((v) => v.type === 'car').slice(0, 6);
 
   return (
     <section className="py-10 md:py-14">
@@ -38,7 +38,7 @@ export function FeaturedVehicles() {
               </Link>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="grid gap-3 sm:gap-3 md:gap-3.5 lg:gap-4 grid-cols-[repeat(auto-fit,_minmax(160px,_1fr))]">
               {featuredBikes.map((vehicle, index) => (
                 <div
                   key={vehicle.id}
@@ -78,7 +78,7 @@ export function FeaturedVehicles() {
               </Link>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="grid gap-3 sm:gap-3 md:gap-3.5 lg:gap-4 grid-cols-[repeat(auto-fit,_minmax(160px,_1fr))]">
               {featuredCars.map((vehicle, index) => (
                 <div
                   key={vehicle.id}
