@@ -74,7 +74,7 @@ export function EnhancedVehicleCard({ vehicle, className, pickupHubs = [] }: Enh
   return (
     <div
       className={cn(
-        'group rounded-lg bg-card border border-border overflow-hidden shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-primary/30',
+        'group h-full flex flex-col rounded-lg bg-card border border-border overflow-hidden shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-primary/30',
         className
       )}
     >
