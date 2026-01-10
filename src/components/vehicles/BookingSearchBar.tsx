@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Calendar, Clock, MapPin, Search, Navigation } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import { useCities } from '@/hooks/useCities';
 
 interface BookingSearchBarProps {
   city: string;
@@ -22,7 +23,7 @@ interface BookingSearchBarProps {
   onSearch: () => void;
 }
 
-const cities = ['Mumbai', 'Delhi', 'Bangalore', 'Hyderabad', 'Chennai', 'Pune', 'Kolkata', 'Ahmedabad'];
+const fallbackCities = ['Mumbai', 'Delhi', 'Bangalore', 'Hyderabad', 'Chennai', 'Pune', 'Kolkata', 'Ahmedabad'];
 const timeSlots = [
   '12:00 AM', '01:00 AM', '02:00 AM', '03:00 AM', '04:00 AM', '05:00 AM',
   '06:00 AM', '07:00 AM', '08:00 AM', '09:00 AM', '10:00 AM', '11:00 AM',
@@ -82,6 +83,13 @@ export function BookingSearchBar({
   onSearch,
 }: BookingSearchBarProps) {
   const [isLocating, setIsLocating] = useState(false);
+  const { data: citiesData, isLoading: citiesLoading } = useCities();
+
+  const cityOptions = useMemo(() => {
+    const names = (citiesData?.map((c) => c.name) || fallbackCities).filter(Boolean);
+    // Deduplicate while preserving order
+    return Array.from(new Set(names));
+  }, [citiesData]);
 
   const handleCurrentLocation = () => {
     if (!navigator.geolocation) {
@@ -135,10 +143,10 @@ export function BookingSearchBar({
           <div className="flex gap-1">
             <Select value={city} onValueChange={onCityChange}>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select city" />
+                <SelectValue placeholder={citiesLoading ? 'Loading cities...' : 'Select city'} />
               </SelectTrigger>
               <SelectContent>
-                {cities.map((c) => (
+                {cityOptions.map((c) => (
                   <SelectItem key={c} value={c}>
                     {c}
                   </SelectItem>

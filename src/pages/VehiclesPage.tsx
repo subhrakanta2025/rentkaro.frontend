@@ -51,13 +51,13 @@ export default function VehiclesPage() {
   const { data: vehicles = [], isLoading, error, refetch } = useVehicles({
     search: searchTerm,
     wheelers: wheelers || undefined,
-    city: searchParams.get('city') || undefined,
+    city: selectedCity || undefined,
     startDate: pickupDateTimeISO,
     endDate: dropoffDateTimeISO,
   });
 
   // Search bar state
-  const [selectedCity, setSelectedCity] = useState(searchParams.get('city') || 'Hyderabad');
+  const [selectedCity, setSelectedCity] = useState(searchParams.get('city') || '');
 
   const cityFilter = searchParams.get('city');
   const typeFilter = wheelers ? (wheelers === '2' ? '2 Wheeler' : '4 Wheeler') : undefined;
@@ -83,7 +83,7 @@ export default function VehiclesPage() {
       return;
     }
     setSearchParams({
-      city: selectedCity,
+      ...(selectedCity ? { city: selectedCity } : {}),
       q: searchTerm || '',
       wheelers: wheelers || '',
       start_date: pickupDateTimeISO,
@@ -153,7 +153,7 @@ export default function VehiclesPage() {
                 onClick={() => { 
                   setSearchTerm(''); 
                   setWheelers(''); 
-                  setSelectedCity('Hyderabad'); 
+                  setSelectedCity(''); 
                   setPickupDate(new Date());
                   setDropoffDate(addDays(new Date(), 1));
                   setSearchParams({}); 
