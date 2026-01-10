@@ -47,13 +47,14 @@ export default function VehiclesPage() {
 
   const pickupDateTimeISO = combineDateTimeISO(pickupDate, pickupTime);
   const dropoffDateTimeISO = combineDateTimeISO(dropoffDate, dropoffTime);
+  const hasValidRange = new Date(dropoffDateTimeISO) > new Date(pickupDateTimeISO);
 
   const { data: vehicles = [], isLoading, error, refetch } = useVehicles({
     search: searchTerm,
     wheelers: wheelers || undefined,
     city: selectedCity || undefined,
-    startDate: pickupDateTimeISO,
-    endDate: dropoffDateTimeISO,
+    startDate: hasValidRange ? pickupDateTimeISO : undefined,
+    endDate: hasValidRange ? dropoffDateTimeISO : undefined,
   });
 
   // Search bar state
@@ -67,10 +68,28 @@ export default function VehiclesPage() {
     if (searchTerm) params.q = searchTerm;
     if (selectedCity) params.city = selectedCity;
     if (wheelers) params.wheelers = wheelers;
-    params.start_date = pickupDateTimeISO;
-    params.end_date = dropoffDateTimeISO;
+    if (hasValidRange) {
+      params.start_date = pickupDateTimeISO;
+      params.end_date = dropoffDateTimeISO;
+    }
     setSearchParams(params, { replace: true });
-  }, [searchTerm, selectedCity, wheelers, pickupDateTimeISO, dropoffDateTimeISO, setSearchParams]);
+  }, [searchTerm, selectedCity, wheelers, hasValidRange, pickupDateTimeISO, dropoffDateTimeISO, setSearchParams]);
+
+  useEffect(() => {
+    if (!hasValidRange) {
+      const correctedDropoff = addDays(pickupDate, 1);
+      setDropoffDate(correctedDropoff);
+      setDropoffTime(pickupTime);
+    }
+  }, [hasValidRange, pickupDate, pickupTime]);
+
+  useEffect(() => {
+    if (!selectedCity && searchParams.get('city')) {
+      const params = Object.fromEntries(searchParams.entries());
+      delete params.city;
+      setSearchParams(params, { replace: true });
+    }
+  }, [selectedCity, searchParams, setSearchParams]);
 
   const filteredVehicles = useMemo(() => {
     if (!vehicles) return [];

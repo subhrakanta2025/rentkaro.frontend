@@ -141,11 +141,12 @@ export function BookingSearchBar({
             City
           </label>
           <div className="flex gap-1">
-            <Select value={city} onValueChange={onCityChange}>
+            <Select value={city || undefined} onValueChange={onCityChange}>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder={citiesLoading ? 'Loading cities...' : 'Select city'} />
+                <SelectValue placeholder={citiesLoading ? 'Loading cities...' : 'All cities'} />
               </SelectTrigger>
               <SelectContent>
+                <SelectItem value="">All cities</SelectItem>
                 {cityOptions.map((c) => (
                   <SelectItem key={c} value={c}>
                     {c}

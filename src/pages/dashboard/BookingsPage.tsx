@@ -5,7 +5,9 @@ import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import {
   Dialog,
   DialogContent,
@@ -87,6 +89,8 @@ export default function BookingsPage() {
   const [selectedBooking, setSelectedBooking] = useState<BookingRecord | null>(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState<'all' | string>('all');
 
   const { data, isLoading, isError, refetch } = useQuery<BookingsResponse>({
     queryKey: ['bookings'],
@@ -121,6 +125,31 @@ export default function BookingsPage() {
   });
 
   const currentList = activeTab === 'upcoming' ? upcomingBookings : historyBookings;
+
+  const statusOptions = useMemo(() => {
+    const statuses = bookings.map((b) => b.status).filter(Boolean);
+    return Array.from(new Set(statuses));
+  }, [bookings]);
+
+  const filteredList = useMemo(() => {
+    const term = searchTerm.trim().toLowerCase();
+    return currentList.filter((booking) => {
+      const matchesTerm = term
+        ? [
+            booking.id,
+            booking.vehicleName,
+            booking.pickupLocation,
+            booking.dropoffLocation,
+            booking.customer?.name,
+          ]
+            .filter(Boolean)
+            .some((field) => field!.toLowerCase().includes(term))
+        : true;
+
+      const matchesStatus = statusFilter === 'all' ? true : booking.status === statusFilter;
+      return matchesTerm && matchesStatus;
+    });
+  }, [currentList, searchTerm, statusFilter]);
 
   const handleOpenDetails = (booking: BookingRecord) => {
     setSelectedBooking(booking);
@@ -185,22 +214,45 @@ export default function BookingsPage() {
             </Card>
           </div>
           <div className="flex flex-wrap items-center gap-3">
-            <Button variant="outline" onClick={() => refetch()} className="gap-2">
-              <RefreshCcw className="h-4 w-4" />
-              Refresh
-            </Button>
-            <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'upcoming' | 'history')}>
-              <TabsList>
-                <TabsTrigger value="upcoming" className="gap-2">
-                  <Clock className="h-4 w-4" />
-                  Upcoming
-                </TabsTrigger>
-                <TabsTrigger value="history" className="gap-2">
-                  <History className="h-4 w-4" />
-                  History
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
+            <div className="flex flex-wrap gap-2">
+              <Input
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search by booking ID, vehicle, or location"
+                className="w-72"
+              />
+              <Select value={statusFilter} onValueChange={(val) => setStatusFilter(val as typeof statusFilter)}>
+                <SelectTrigger className="w-36">
+                  <SelectValue placeholder="Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All statuses</SelectItem>
+                  {statusOptions.map((status) => (
+                    <SelectItem key={status} value={status} className="capitalize">
+                      {status}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              <Button variant="outline" onClick={() => refetch()} className="gap-2">
+                <RefreshCcw className="h-4 w-4" />
+                Refresh
+              </Button>
+              <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'upcoming' | 'history')}>
+                <TabsList>
+                  <TabsTrigger value="upcoming" className="gap-2">
+                    <Clock className="h-4 w-4" />
+                    Upcoming
+                  </TabsTrigger>
+                  <TabsTrigger value="history" className="gap-2">
+                    <History className="h-4 w-4" />
+                    History
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </div>
           </div>
         </div>
 
@@ -219,7 +271,7 @@ export default function BookingsPage() {
                 Try again
               </Button>
             </div>
-          ) : currentList.length === 0 ? (
+          ) : filteredList.length === 0 ? (
             <div className="text-center py-12">
               {activeTab === 'upcoming' ? (
                 <Calendar className="mx-auto mb-4 h-10 w-10 text-muted-foreground" />
@@ -237,7 +289,7 @@ export default function BookingsPage() {
             </div>
           ) : (
             <div className="space-y-5">
-              {currentList.map((booking) => (
+              {filteredList.map((booking) => (
                 <div key={booking.id} className="rounded-2xl border border-border/70 p-4">
                   <div className="flex flex-col gap-5 md:flex-row">
                     <div className="w-full md:w-48">
