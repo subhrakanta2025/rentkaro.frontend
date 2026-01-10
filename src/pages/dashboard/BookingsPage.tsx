@@ -94,7 +94,10 @@ export default function BookingsPage() {
 
   const { data, isLoading, isError, refetch } = useQuery<BookingsResponse>({
     queryKey: ['bookings'],
-    queryFn: () => apiClient.getBookings(),
+    queryFn: async () => {
+      const response = await apiClient.getBookings();
+      return response as BookingsResponse;
+    },
   });
 
   const bookings = data?.bookings ?? [];
@@ -126,8 +129,10 @@ export default function BookingsPage() {
 
   const currentList = activeTab === 'upcoming' ? upcomingBookings : historyBookings;
 
-  const statusOptions = useMemo(() => {
-    const statuses = bookings.map((b) => b.status).filter(Boolean);
+  const statusOptions = useMemo<string[]>(() => {
+    const statuses = bookings
+      .map((b) => b.status)
+      .filter((s): s is string => Boolean(s));
     return Array.from(new Set(statuses));
   }, [bookings]);
 

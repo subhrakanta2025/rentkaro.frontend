@@ -72,7 +72,10 @@ export default function VehicleDetailPage() {
     .filter((v) => v.type === vehicle.type && v.id !== vehicle.id)
     .slice(0, 3);
 
-  const vehicleImages = vehicle.images.length > 0 ? vehicle.images : [vehicle.image];
+  const vehicleImages = Array.isArray(vehicle.images) && vehicle.images.length > 0
+    ? vehicle.images
+    : [vehicle.image].filter(Boolean);
+  const features = Array.isArray(vehicle.features) ? vehicle.features : [];
 
   return (
     <div className="min-h-screen bg-background">
@@ -240,11 +243,11 @@ export default function VehicleDetailPage() {
             </div>
 
             {/* Features */}
-            {vehicle.features.length > 0 && (
+            {features.length > 0 && (
               <div>
                 <h2 className="text-lg font-semibold text-foreground mb-4">Features Included</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                  {vehicle.features.map((feature) => (
+                  {features.map((feature) => (
                     <div
                       key={feature}
                       className="flex items-center gap-2 text-sm text-muted-foreground"

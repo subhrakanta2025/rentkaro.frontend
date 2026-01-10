@@ -9,9 +9,9 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
     middlewareMode: false,
+    // Let Vite pick the active HMR port so websocket connects even if 8080 is busy
     hmr: {
       host: "localhost",
-      port: 8080,
     },
     allowedHosts: [
       "localhost",

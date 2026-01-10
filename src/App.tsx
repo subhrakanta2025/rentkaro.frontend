@@ -71,7 +71,7 @@ function AppRoutes() {
           <Route path="/vehicles/:id" element={<VehicleDetailPage />} />
           <Route path="/favorites" element={<ProtectedRoute><FavoritesPage /></ProtectedRoute>} />
           <Route path="/booking/:id" element={<ProtectedRoute><BookingPage /></ProtectedRoute>} />
-          <Route path="/new-booking/:id" element={<NewBookingPage />} />
+          <Route path="/new-booking/:id" element={<ProtectedRoute><NewBookingPage /></ProtectedRoute>} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/activate-account" element={<ActivateAccountPage />} />

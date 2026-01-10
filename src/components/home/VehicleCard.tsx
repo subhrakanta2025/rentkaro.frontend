@@ -34,7 +34,7 @@ interface VehicleCardProps {
 export function VehicleCard({ vehicle, className }: VehicleCardProps) {
   return (
     <Link
-      to={`/vehicles?q=${encodeURIComponent(vehicle.name)}`}
+      to="/vehicles"
       className={cn(
         "group h-full flex flex-col rounded-lg bg-white border border-gray-100 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1",
         className

@@ -1,10 +1,19 @@
+import { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+
+// Redirect shim so the old /new-booking/:id route forwards to the real booking flow
+// at /booking/:id. Keeps existing links working while avoiding duplicate pages.
 const NewBookingPage = () => {
-  return (
-    <div>
-      <h1>Hello World</h1>
-      <button>Book Now</button>
-    </div>
-  );
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (id) {
+      navigate(`/booking/${id}`, { replace: true });
+    }
+  }, [id, navigate]);
+
+  return null;
 };
 
 export default NewBookingPage;

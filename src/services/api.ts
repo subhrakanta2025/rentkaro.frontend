@@ -3,7 +3,7 @@
  * Handles all HTTP requests to the Flask backend
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://rentkaro-backend-807261496773.us-central1.run.app/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8085/api';
 
 class APIClient {
   private token = '';
@@ -57,27 +57,20 @@ class APIClient {
     includeAuth = true
   ): Promise<T> {
     const url = `${API_BASE_URL}${endpoint}`;
-    console.log('[APIClient] Making request to:', url);
-    
     const headers = this.getHeaders(includeAuth);
     const config: RequestInit = {
       ...options,
       headers: headers as HeadersInit,
     };
-
-    console.log('[APIClient] Request config:', { method: config.method, headers });
     
     const response = await fetch(url, config);
-    console.log('[APIClient] Response status:', response.status, response.statusText);
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      console.error('[APIClient] Error response:', errorData);
       throw new Error(errorData.error || `HTTP ${response.status}`);
     }
 
     const data = await response.json();
-    console.log('[APIClient] Response data:', data);
     return data;
   }
 

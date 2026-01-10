@@ -13,7 +13,10 @@ import { Search } from 'lucide-react';
 export default function VehiclesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState(searchParams.get('q') || '');
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchParams.get('q') || '');
   const [wheelers, setWheelers] = useState<'2' | '4' | ''>((searchParams.get('wheelers') as '2' | '4' | '') || '');
+  const [type, setType] = useState(searchParams.get('type') || '');
+  const [selectedCity, setSelectedCity] = useState(searchParams.get('city') || '');
 
   const parseDate = (value: string | null, fallback: Date) => {
     if (!value) return fallback;
@@ -50,30 +53,36 @@ export default function VehiclesPage() {
   const hasValidRange = new Date(dropoffDateTimeISO) > new Date(pickupDateTimeISO);
 
   const { data: vehicles = [], isLoading, error, refetch } = useVehicles({
-    search: searchTerm,
+    search: debouncedSearchTerm,
     wheelers: wheelers || undefined,
     city: selectedCity || undefined,
+    type: type || undefined,
     startDate: hasValidRange ? pickupDateTimeISO : undefined,
     endDate: hasValidRange ? dropoffDateTimeISO : undefined,
   });
 
   // Search bar state
-  const [selectedCity, setSelectedCity] = useState(searchParams.get('city') || '');
-
   const cityFilter = searchParams.get('city');
+  const typeParam = searchParams.get('type');
   const typeFilter = wheelers ? (wheelers === '2' ? '2 Wheeler' : '4 Wheeler') : undefined;
 
   useEffect(() => {
     const params: Record<string, string> = {};
-    if (searchTerm) params.q = searchTerm;
+    if (debouncedSearchTerm) params.q = debouncedSearchTerm;
     if (selectedCity) params.city = selectedCity;
     if (wheelers) params.wheelers = wheelers;
+    if (type) params.type = type;
     if (hasValidRange) {
       params.start_date = pickupDateTimeISO;
       params.end_date = dropoffDateTimeISO;
     }
     setSearchParams(params, { replace: true });
-  }, [searchTerm, selectedCity, wheelers, hasValidRange, pickupDateTimeISO, dropoffDateTimeISO, setSearchParams]);
+  }, [debouncedSearchTerm, selectedCity, wheelers, type, hasValidRange, pickupDateTimeISO, dropoffDateTimeISO, setSearchParams]);
+
+  useEffect(() => {
+    const handle = setTimeout(() => setDebouncedSearchTerm(searchTerm), 300);
+    return () => clearTimeout(handle);
+  }, [searchTerm]);
 
   useEffect(() => {
     if (!hasValidRange) {
@@ -105,6 +114,7 @@ export default function VehiclesPage() {
       ...(selectedCity ? { city: selectedCity } : {}),
       q: searchTerm || '',
       wheelers: wheelers || '',
+      type: type || '',
       start_date: pickupDateTimeISO,
       end_date: dropoffDateTimeISO,
     });
@@ -158,7 +168,7 @@ export default function VehiclesPage() {
                   <span className="text-foreground">Vehicles</span>
                 </div>
                 <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground">
-                  {typeFilter || 'All Vehicles'}
+                  {typeFilter || typeParam || 'All Vehicles'}
                   {cityFilter && ` in ${cityFilter}`}
                 </h1>
                 <p className="mt-1 text-xs sm:text-sm text-muted-foreground">
@@ -172,6 +182,7 @@ export default function VehiclesPage() {
                 onClick={() => { 
                   setSearchTerm(''); 
                   setWheelers(''); 
+                  setType('');
                   setSelectedCity(''); 
                   setPickupDate(new Date());
                   setDropoffDate(addDays(new Date(), 1));
