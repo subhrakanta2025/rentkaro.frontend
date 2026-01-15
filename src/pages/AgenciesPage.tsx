@@ -37,9 +37,8 @@ export default function AgenciesPage() {
           {agencies.map((agency, index) => {
             const counts = getAgencyVehicleCounts(agency.id);
             return (
-              <Link
+              <div
                 key={agency.id}
-                to={`/agencies/${agency.id}`}
                 className="group rounded-lg sm:rounded-xl bg-card border border-border/50 p-3 sm:p-4 md:p-6 shadow-card transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1 animate-slide-up"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
@@ -87,7 +86,7 @@ export default function AgenciesPage() {
                     {agency.totalVehicles} Total
                   </Badge>
                 </div>
-              </Link>
+              </div>
             );
           })}
         </div>

@@ -172,7 +172,7 @@ export function HeroSection() {
                   </div>
                   
                   {showCityDropdown && (
-                    <div className="absolute top-full left-0 right-0 mt-1 rounded-md border border-border bg-background shadow-lg z-50 animate-slide-down max-h-56 overflow-y-auto">
+                    <div className="absolute top-full left-0 right-0 mt-1 rounded-md border border-border bg-card shadow-lg z-[100] animate-slide-down max-h-56 overflow-y-auto">
                       {citiesLoading ? (
                         <div className="flex items-center justify-center py-4">
                           <Loader2 className="h-4 w-4 animate-spin text-primary" />
