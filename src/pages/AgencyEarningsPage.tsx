@@ -111,25 +111,10 @@ export default function AgencyEarningsPage() {
   const [bookings, setBookings] = useState<BookingRow[]>([]);
   const [chartsReady, setChartsReady] = useState(false);
   const [chartError, setChartError] = useState<string | null>(null);
-  const [Recharts, setRecharts] = useState<typeof import('recharts') | null>(null);
+  const [R, setR] = useState<typeof import('recharts') | null>(null);
 
   const loadEarnings = async (range: RangeKey) => {
     setLoading(true);
-    try {
-      const response = await apiClient.getAgencyEarnings(range);
-      setStats(response as EarningsResponse);
-      // Also fetch recent bookings in the same range (last 50)
-      const now = new Date();
-      const start = getRangeStart(range, now);
-      const bookingsResp: any = await apiClient.getBookings({
-        startDate: start.toISOString(),
-        endDate: now.toISOString(),
-        limit: 50,
-      });
-      setBookings(bookingsResp.bookings || []);
-    } catch (error: any) {
-      console.error('Failed to load earnings', error);
-      toast.error(error.message || 'Failed to load earnings');
     } finally {
       setLoading(false);
     }
@@ -144,7 +129,7 @@ export default function AgencyEarningsPage() {
     let mounted = true;
     import('recharts')
       .then((mod) => {
-        if (mounted) setRecharts(mod);
+        if (mounted) setR(mod);
       })
       .catch((err) => {
         console.error('Failed to load charts bundle', err);
@@ -156,7 +141,7 @@ export default function AgencyEarningsPage() {
   }, []);
 
   const renderChart = (node: React.ReactNode) => {
-    if (!chartsReady || !Recharts) return <div className="h-[300px] w-full bg-muted/40 animate-pulse rounded-lg" />;
+    if (!chartsReady || !R) return <div className="h-[300px] w-full bg-muted/40 animate-pulse rounded-lg" />;
     if (chartError) {
       return (
         <div className="h-[300px] flex items-center justify-center text-sm text-muted-foreground border border-dashed rounded-lg">
@@ -328,20 +313,20 @@ export default function AgencyEarningsPage() {
               <h2 className="text-xl font-semibold">Monthly Earnings Trend</h2>
             </div>
             {renderChart(
-              Recharts && (
-                <Recharts.ResponsiveContainer width="100%" height={300}>
-                  <Recharts.LineChart data={monthlyEarnings}>
-                    <Recharts.CartesianGrid strokeDasharray="3 3" />
-                    <Recharts.XAxis dataKey="month" />
-                    <Recharts.YAxis />
-                    <Recharts.Tooltip
+              R && (
+                <R.ResponsiveContainer width="100%" height={300}>
+                  <R.LineChart data={monthlyEarnings}>
+                    <R.CartesianGrid strokeDasharray="3 3" />
+                    <R.XAxis dataKey="month" />
+                    <R.YAxis />
+                    <R.Tooltip
                       formatter={(value: any) => `₹${value.toLocaleString()}`}
                       contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }}
                     />
-                    <Recharts.Legend />
-                    <Recharts.Line type="monotone" dataKey="earnings" stroke="#8b5cf6" strokeWidth={2} name="Earnings" />
-                  </Recharts.LineChart>
-                </Recharts.ResponsiveContainer>
+                    <R.Legend />
+                    <R.Line type="monotone" dataKey="earnings" stroke="#8b5cf6" strokeWidth={2} name="Earnings" />
+                  </R.LineChart>
+                </R.ResponsiveContainer>
               )
             )}
           </Card>
@@ -353,10 +338,10 @@ export default function AgencyEarningsPage() {
               <h2 className="text-xl font-semibold">Revenue by Category</h2>
             </div>
             {renderChart(
-              Recharts && (
-                <Recharts.ResponsiveContainer width="100%" height={300}>
-                  <Recharts.PieChart>
-                    <Recharts.Pie
+              R && (
+                <R.ResponsiveContainer width="100%" height={300}>
+                  <R.PieChart>
+                    <R.Pie
                       data={categoryChartData}
                       cx="50%"
                       cy="50%"
@@ -371,15 +356,15 @@ export default function AgencyEarningsPage() {
                       dataKey="value"
                     >
                       {categoryChartData.map((entry, index) => (
-                        <Recharts.Cell key={`cell-${index}`} fill={entry.color} />
+                        <R.Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
-                    </Recharts.Pie>
-                    <Recharts.Tooltip
+                    </R.Pie>
+                    <R.Tooltip
                       formatter={(value: any) => `₹${value.toLocaleString()}`}
                       contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }}
                     />
-                  </Recharts.PieChart>
-                </Recharts.ResponsiveContainer>
+                  </R.PieChart>
+                </R.ResponsiveContainer>
               )
             )}
           </Card>
