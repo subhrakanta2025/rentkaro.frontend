@@ -173,12 +173,13 @@ export function HeroSection() {
                   
                   {showCityDropdown && (
                     <>
-                      {/* Backdrop to cover content below */}
+                      {/* Backdrop to close dropdown on outside click */}
                       <div 
                         className="fixed inset-0 z-[9998]" 
                         onClick={() => setShowCityDropdown(false)}
                       />
-                      <div className="absolute top-full left-0 right-0 mt-1 rounded-md border border-border bg-white dark:bg-gray-900 shadow-xl z-[9999] max-h-56 overflow-y-auto">
+                      {/* Dropdown opens UPWARD to avoid overlapping with content below */}
+                      <div className="absolute bottom-full left-0 right-0 mb-1 rounded-md border border-border bg-white dark:bg-gray-900 shadow-xl z-[9999] max-h-56 overflow-y-auto">
                         {citiesLoading ? (
                           <div className="flex items-center justify-center py-4 bg-white dark:bg-gray-900">
                             <Loader2 className="h-4 w-4 animate-spin text-primary" />
