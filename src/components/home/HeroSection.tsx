@@ -172,49 +172,56 @@ export function HeroSection() {
                   </div>
                   
                   {showCityDropdown && (
-                    <div className="absolute top-full left-0 right-0 mt-1 rounded-md border border-border bg-white dark:bg-gray-900 shadow-xl z-[9999] animate-slide-down max-h-56 overflow-y-auto" style={{ isolation: 'isolate' }}>
-                      {citiesLoading ? (
-                        <div className="flex items-center justify-center py-4 bg-white dark:bg-gray-900">
-                          <Loader2 className="h-4 w-4 animate-spin text-primary" />
-                        </div>
-                      ) : citiesData.length === 0 ? (
-                        <div className="px-3 py-4 text-center text-xs text-muted-foreground bg-white dark:bg-gray-900">
-                          No cities available
-                        </div>
-                      ) : (
-                        <div className="py-1 bg-white dark:bg-gray-900">
-                          <div className="px-2 pb-1">
-                            <input
-                              type="text"
-                              className="w-full rounded border border-input bg-background px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-primary"
-                              placeholder="Search city..."
-                              value={citySearch}
-                              onChange={(e) => setCitySearch(e.target.value)}
-                              autoFocus
-                            />
+                    <>
+                      {/* Backdrop to cover content below */}
+                      <div 
+                        className="fixed inset-0 z-[9998]" 
+                        onClick={() => setShowCityDropdown(false)}
+                      />
+                      <div className="absolute top-full left-0 right-0 mt-1 rounded-md border border-border bg-white dark:bg-gray-900 shadow-xl z-[9999] max-h-56 overflow-y-auto">
+                        {citiesLoading ? (
+                          <div className="flex items-center justify-center py-4 bg-white dark:bg-gray-900">
+                            <Loader2 className="h-4 w-4 animate-spin text-primary" />
                           </div>
-                          {filteredCities.length === 0 ? (
-                            <div className="px-3 py-3 text-center text-xs text-muted-foreground bg-white dark:bg-gray-900">
-                              No matching cities
+                        ) : citiesData.length === 0 ? (
+                          <div className="px-3 py-4 text-center text-xs text-muted-foreground bg-white dark:bg-gray-900">
+                            No cities available
+                          </div>
+                        ) : (
+                          <div className="py-1 bg-white dark:bg-gray-900">
+                            <div className="px-2 pb-1 bg-white dark:bg-gray-900">
+                              <input
+                                type="text"
+                                className="w-full rounded border border-input bg-white dark:bg-gray-900 px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-primary"
+                                placeholder="Search city..."
+                                value={citySearch}
+                                onChange={(e) => setCitySearch(e.target.value)}
+                                autoFocus
+                              />
                             </div>
-                          ) : (
-                            filteredCities.map((cityItem) => (
-                              <button
-                                key={cityItem.id}
-                                className="w-full px-3 py-2 text-left text-xs hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors bg-white dark:bg-gray-900"
-                                onClick={() => {
-                                  setCity(cityItem.name);
-                                  setShowCityDropdown(false);
-                                  setCitySearch('');
-                                }}
-                              >
-                                {cityItem.name}
-                              </button>
-                            ))
-                          )}
-                        </div>
-                      )}
-                    </div>
+                            {filteredCities.length === 0 ? (
+                              <div className="px-3 py-3 text-center text-xs text-muted-foreground bg-white dark:bg-gray-900">
+                                No matching cities
+                              </div>
+                            ) : (
+                              filteredCities.map((cityItem) => (
+                                <button
+                                  key={cityItem.id}
+                                  className="w-full px-3 py-2 text-left text-xs hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors bg-white dark:bg-gray-900"
+                                  onClick={() => {
+                                    setCity(cityItem.name);
+                                    setShowCityDropdown(false);
+                                    setCitySearch('');
+                                  }}
+                                >
+                                  {cityItem.name}
+                                </button>
+                              ))
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </>
                   )}
                 </div>
 
