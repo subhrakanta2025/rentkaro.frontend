@@ -93,7 +93,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       apiClient.setToken(token);
       fetchCurrentUser()
         .then(() => fetchKYC())
-        .catch((err) => console.error('Error loading auth:', err))
+        .catch((err) => {
+          console.error('Error loading auth:', err);
+          // Clear invalid token if API fails
+          if (err?.message?.includes('401') || err?.message?.includes('403')) {
+            apiClient.clearToken();
+            setUser(null);
+            setProfile(null);
+            setUserRole(null);
+          }
+        })
         .finally(() => setIsLoading(false));
     } else {
       setIsLoading(false);
