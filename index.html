@@ -3,6 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- DNS Prefetch & Preconnect for faster resource loading -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Preload critical assets -->
+    <link rel="preload" href="/logo.png" as="image" type="image/png" />
+    
     <link rel="icon" href="/logo.png" type="image/png" sizes="512x512" />
     <link rel="icon" href="/logo.png" type="image/png" sizes="256x256" />
     <link rel="icon" href="/favicon.png" type="image/png" sizes="64x64" />
