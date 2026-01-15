@@ -44,14 +44,16 @@ export default defineConfig(({ mode }) => ({
       output: {
         manualChunks: (id) => {
           if (id.includes('node_modules')) {
+            // Skip recharts/d3 - let Vite handle them via dynamic import naturally
+            // This prevents module initialization order issues with React
+            if (id.includes('recharts') || id.includes('d3-')) {
+              return undefined;
+            }
             if (id.includes('react-dom') || id.includes('react-router')) {
               return 'vendor-react';
             }
             if (id.includes('@radix-ui')) {
               return 'vendor-ui';
-            }
-            if (id.includes('recharts') || id.includes('d3')) {
-              return 'vendor-charts';
             }
             if (id.includes('@tanstack')) {
               return 'vendor-query';
