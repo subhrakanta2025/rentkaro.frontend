@@ -141,7 +141,7 @@ export function HeroSection() {
               </div>
 
               {/* Search Fields */}
-              <div className="flex flex-col gap-2 md:grid md:grid-cols-[1fr_1.2fr_1.2fr_auto] md:items-stretch">
+              <div className="relative z-20 flex flex-col gap-2 md:grid md:grid-cols-[1fr_1.2fr_1.2fr_auto] md:items-stretch">
                 {/* City Selector */}
                 <div className="relative">
                   <div
@@ -172,7 +172,7 @@ export function HeroSection() {
                   </div>
                   
                   {showCityDropdown && (
-                    <div className="absolute top-full left-0 right-0 mt-1 rounded-md border border-border bg-card shadow-lg z-[100] animate-slide-down max-h-56 overflow-y-auto">
+                    <div className="absolute top-full left-0 right-0 mt-1 rounded-md border border-border bg-card shadow-lg z-[200] animate-slide-down max-h-56 overflow-y-auto">
                       {citiesLoading ? (
                         <div className="flex items-center justify-center py-4">
                           <Loader2 className="h-4 w-4 animate-spin text-primary" />
@@ -327,7 +327,7 @@ export function HeroSection() {
           </div>
 
           {/* Stats */}
-          <div className="mt-6 sm:mt-8 md:mt-10 lg:mt-12 grid grid-cols-3 gap-3 sm:gap-6 md:gap-8 animate-fade-in px-2" style={{ animationDelay: '400ms' }}>
+          <div className="relative z-0 mt-6 sm:mt-8 md:mt-10 lg:mt-12 grid grid-cols-3 gap-3 sm:gap-6 md:gap-8 animate-fade-in px-2" style={{ animationDelay: '400ms', zIndex: 1 }}>
             <div className="bg-card/50 rounded-lg p-2 sm:p-3 border border-border/30">
               <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-foreground">500+</p>
               <p className="text-[10px] sm:text-xs md:text-sm text-muted-foreground">Vehicles</p>
