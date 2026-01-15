@@ -143,7 +143,7 @@ export function HeroSection() {
               {/* Search Fields */}
               <div className="relative z-20 flex flex-col gap-2 md:grid md:grid-cols-[1fr_1.2fr_1.2fr_auto] md:items-stretch">
                 {/* City Selector */}
-                <div className="relative">
+                <div className="relative" style={{ zIndex: 50 }}>
                   <div
                     className={cn(
                       "flex items-center gap-2 rounded-md border bg-background px-3 py-2 h-[48px] cursor-pointer transition-colors",
@@ -172,17 +172,17 @@ export function HeroSection() {
                   </div>
                   
                   {showCityDropdown && (
-                    <div className="absolute top-full left-0 right-0 mt-1 rounded-md border border-border bg-card shadow-lg z-[200] animate-slide-down max-h-56 overflow-y-auto">
+                    <div className="absolute top-full left-0 right-0 mt-1 rounded-md border border-border bg-white dark:bg-gray-900 shadow-xl z-[9999] animate-slide-down max-h-56 overflow-y-auto" style={{ isolation: 'isolate' }}>
                       {citiesLoading ? (
-                        <div className="flex items-center justify-center py-4">
+                        <div className="flex items-center justify-center py-4 bg-white dark:bg-gray-900">
                           <Loader2 className="h-4 w-4 animate-spin text-primary" />
                         </div>
                       ) : citiesData.length === 0 ? (
-                        <div className="px-3 py-4 text-center text-xs text-muted-foreground">
+                        <div className="px-3 py-4 text-center text-xs text-muted-foreground bg-white dark:bg-gray-900">
                           No cities available
                         </div>
                       ) : (
-                        <div className="py-1">
+                        <div className="py-1 bg-white dark:bg-gray-900">
                           <div className="px-2 pb-1">
                             <input
                               type="text"
@@ -194,14 +194,14 @@ export function HeroSection() {
                             />
                           </div>
                           {filteredCities.length === 0 ? (
-                            <div className="px-3 py-3 text-center text-xs text-muted-foreground">
+                            <div className="px-3 py-3 text-center text-xs text-muted-foreground bg-white dark:bg-gray-900">
                               No matching cities
                             </div>
                           ) : (
                             filteredCities.map((cityItem) => (
                               <button
                                 key={cityItem.id}
-                                className="w-full px-3 py-2 text-left text-xs hover:bg-muted transition-colors"
+                                className="w-full px-3 py-2 text-left text-xs hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors bg-white dark:bg-gray-900"
                                 onClick={() => {
                                   setCity(cityItem.name);
                                   setShowCityDropdown(false);
