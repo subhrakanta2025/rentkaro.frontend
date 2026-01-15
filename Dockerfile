@@ -4,7 +4,7 @@ FROM node:20-alpine AS build
 WORKDIR /app
 
 # Build-time API base URL (Vite reads VITE_* at build time). Override at build if needed.
-ARG VITE_API_URL="http://127.0.0.1:8085/api"
+ARG VITE_API_URL="https://rentkaro-backend-807261496773.us-central1.run.app/api"
 ENV VITE_API_URL=${VITE_API_URL}
 
 # Install dependencies

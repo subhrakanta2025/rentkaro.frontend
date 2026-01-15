@@ -3,7 +3,7 @@
  * Handles all HTTP requests to the Flask backend
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8085/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://rentkaro-backend-807261496773.us-central1.run.app/api';
 
 class APIClient {
   private token = '';
