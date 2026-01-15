@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -5,45 +6,56 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+
+// Critical path - load immediately
 import Index from "./pages/Index";
-import VehiclesPage from "./pages/VehiclesPage";
-import VehicleDetailPage from "./pages/VehicleDetailPage";
-import BookingPage from "./pages/BookingPage";
-import NewBookingPage from "./pages/NewBookingPage";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
-import ActivateAccountPage from "./pages/ActivateAccountPage";
-import ForgotPasswordPage from "./pages/ForgotPasswordPage";
-import ResetPasswordPage from "./pages/ResetPasswordPage";
-import HowItWorksPage from "./pages/HowItWorksPage";
-import AgenciesPage from "./pages/AgenciesPage";
-import KYCVerificationPage from "./pages/KYCVerificationPage";
-import DashboardOverview from "./pages/dashboard/DashboardOverview";
-import BookingsPage from "./pages/dashboard/BookingsPage";
-import SettingsProfile from "./pages/dashboard/SettingsProfile";
-import SettingsNotifications from "./pages/dashboard/SettingsNotifications";
-import AgencyDashboardPage from "./pages/AgencyDashboardPage";
-import AgencyRegisterPage from "./pages/AgencyRegisterPage";
-import AgencySetupPage from "./pages/AgencySetupPage";
-import AgencyKYCPage from "./pages/AgencyKYCPage";
-import AgencyEditPage from "./pages/AgencyEditPage";
-import AddVehiclePage from "./pages/AddVehiclePage";
-import MyVehiclesPage from "./pages/MyVehiclesPage";
-import AgencyBookingsPage from "./pages/AgencyBookingsPage";
-import AgencyEarningsPage from "./pages/AgencyEarningsPage";
-import PaymentPage from "./pages/PaymentPage";
-import BookingConfirmationPage from "./pages/BookingConfirmationPage";
-import AboutPage from "./pages/AboutPage";
-import ContactPage from "./pages/ContactPage";
-import TermsPage from "./pages/TermsPage";
-import PrivacyPage from "./pages/PrivacyPage";
-import HelpPage from "./pages/HelpPage";
-import RefundPage from "./pages/RefundPage";
-import SafetyPage from "./pages/SafetyPage";
-import BlogPage from "./pages/BlogPage";
-import BlogPostPage from "./pages/BlogPostPage";
-import FavoritesPage from "./pages/FavoritesPage";
 import NotFound from "./pages/NotFound";
+
+// Lazy load non-critical routes
+const VehiclesPage = lazy(() => import("./pages/VehiclesPage"));
+const VehicleDetailPage = lazy(() => import("./pages/VehicleDetailPage"));
+const BookingPage = lazy(() => import("./pages/BookingPage"));
+const NewBookingPage = lazy(() => import("./pages/NewBookingPage"));
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const RegisterPage = lazy(() => import("./pages/RegisterPage"));
+const ActivateAccountPage = lazy(() => import("./pages/ActivateAccountPage"));
+const ForgotPasswordPage = lazy(() => import("./pages/ForgotPasswordPage"));
+const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage"));
+const HowItWorksPage = lazy(() => import("./pages/HowItWorksPage"));
+const AgenciesPage = lazy(() => import("./pages/AgenciesPage"));
+const KYCVerificationPage = lazy(() => import("./pages/KYCVerificationPage"));
+const DashboardOverview = lazy(() => import("./pages/dashboard/DashboardOverview"));
+const BookingsPage = lazy(() => import("./pages/dashboard/BookingsPage"));
+const SettingsProfile = lazy(() => import("./pages/dashboard/SettingsProfile"));
+const SettingsNotifications = lazy(() => import("./pages/dashboard/SettingsNotifications"));
+const AgencyDashboardPage = lazy(() => import("./pages/AgencyDashboardPage"));
+const AgencyRegisterPage = lazy(() => import("./pages/AgencyRegisterPage"));
+const AgencySetupPage = lazy(() => import("./pages/AgencySetupPage"));
+const AgencyKYCPage = lazy(() => import("./pages/AgencyKYCPage"));
+const AgencyEditPage = lazy(() => import("./pages/AgencyEditPage"));
+const AddVehiclePage = lazy(() => import("./pages/AddVehiclePage"));
+const MyVehiclesPage = lazy(() => import("./pages/MyVehiclesPage"));
+const AgencyBookingsPage = lazy(() => import("./pages/AgencyBookingsPage"));
+const AgencyEarningsPage = lazy(() => import("./pages/AgencyEarningsPage"));
+const PaymentPage = lazy(() => import("./pages/PaymentPage"));
+const BookingConfirmationPage = lazy(() => import("./pages/BookingConfirmationPage"));
+const AboutPage = lazy(() => import("./pages/AboutPage"));
+const ContactPage = lazy(() => import("./pages/ContactPage"));
+const TermsPage = lazy(() => import("./pages/TermsPage"));
+const PrivacyPage = lazy(() => import("./pages/PrivacyPage"));
+const HelpPage = lazy(() => import("./pages/HelpPage"));
+const RefundPage = lazy(() => import("./pages/RefundPage"));
+const SafetyPage = lazy(() => import("./pages/SafetyPage"));
+const BlogPage = lazy(() => import("./pages/BlogPage"));
+const BlogPostPage = lazy(() => import("./pages/BlogPostPage"));
+const FavoritesPage = lazy(() => import("./pages/FavoritesPage"));
+
+// Loading fallback component
+const PageLoader = () => (
+  <div className="flex items-center justify-center min-h-[50vh]">
+    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+  </div>
+);
 
 const queryClient = new QueryClient();
 
@@ -65,6 +77,7 @@ function AppRoutes() {
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <Suspense fallback={<PageLoader />}>
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/vehicles" element={<VehiclesPage />} />
@@ -115,6 +128,7 @@ function AppRoutes() {
           <Route path="/agency/edit-vehicle/:id" element={<ProtectedRoute requiredRole="agency"><AddVehiclePage /></ProtectedRoute>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        </Suspense>
       </BrowserRouter>
     </>
   );

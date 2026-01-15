@@ -5,7 +5,7 @@ import { Search, MapPin, Calendar, Bike, Car, ChevronDown, Clock, Loader2 } from
 import { cn } from '@/lib/utils';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar as CalendarComponent } from '@/components/ui/calendar';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger } from '@/components/ui/select';
 import { format, addDays } from 'date-fns';
 import { useCities } from '@/hooks/useCities';
 

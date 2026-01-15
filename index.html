@@ -4,6 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
+    <!-- Critical CSS for initial render -->
+    <style>
+      :root{--background:0 0% 100%;--foreground:222.2 84% 4.9%;--primary:142.1 76.2% 36.3%}body{margin:0;font-family:system-ui,-apple-system,sans-serif;background:hsl(var(--background));color:hsl(var(--foreground))}#root{min-height:100vh}.flex{display:flex}.items-center{align-items:center}.justify-center{justify-content:center}.min-h-screen{min-height:100vh}.animate-spin{animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+    </style>
+    
     <!-- DNS Prefetch & Preconnect for faster resource loading -->
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
     <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
@@ -11,7 +16,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     
     <!-- Preload critical assets -->
-    <link rel="preload" href="/logo.png" as="image" type="image/png" />
+    <link rel="preload" href="/logo.png" as="image" type="image/png" fetchpriority="high" />
     
     <link rel="icon" href="/logo.png" type="image/png" sizes="512x512" />
     <link rel="icon" href="/logo.png" type="image/png" sizes="256x256" />

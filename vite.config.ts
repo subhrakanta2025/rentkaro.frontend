@@ -33,15 +33,33 @@ export default defineConfig(({ mode }) => ({
       compress: {
         drop_console: true,
         drop_debugger: true,
+        passes: 2,
       },
     },
     cssCodeSplit: true,
+    cssMinify: true,
+    reportCompressedSize: false,
+    chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ["react", "react-dom", "react-router-dom"],
-          ui: ["@radix-ui/react-dialog", "@radix-ui/react-popover", "@radix-ui/react-select", "@radix-ui/react-tabs"],
-          charts: ["recharts"],
+        manualChunks: (id) => {
+          if (id.includes('node_modules')) {
+            if (id.includes('react-dom') || id.includes('react-router')) {
+              return 'vendor-react';
+            }
+            if (id.includes('@radix-ui')) {
+              return 'vendor-ui';
+            }
+            if (id.includes('recharts') || id.includes('d3')) {
+              return 'vendor-charts';
+            }
+            if (id.includes('@tanstack')) {
+              return 'vendor-query';
+            }
+            if (id.includes('date-fns') || id.includes('lucide')) {
+              return 'vendor-utils';
+            }
+          }
         },
       },
     },
