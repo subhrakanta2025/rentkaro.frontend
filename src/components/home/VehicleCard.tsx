@@ -45,6 +45,9 @@ export function VehicleCard({ vehicle, className }: VehicleCardProps) {
         <img
           src={vehicle.image}
           alt={vehicle.name}
+          loading="lazy"
+          width="600"
+          height="400"
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
         {/* Gradient Overlay */}
@@ -108,6 +111,9 @@ export function VehicleCard({ vehicle, className }: VehicleCardProps) {
               <img
                 src={vehicle.agencyLogo}
                 alt={vehicle.agencyName}
+                loading="lazy"
+                width="48"
+                height="48"
                 className="h-full w-full object-cover"
               />
             </div>

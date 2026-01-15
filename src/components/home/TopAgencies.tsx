@@ -38,6 +38,9 @@ export function TopAgencies() {
                 <img
                   src={agency.logo}
                   alt={agency.name}
+                  loading="lazy"
+                  width="64"
+                  height="64"
                   className="h-8 w-8 sm:h-10 sm:w-10 rounded-lg object-cover"
                 />
                 <div className="flex-1 min-w-0">
