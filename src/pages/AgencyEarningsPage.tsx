@@ -124,6 +124,8 @@ export default function AgencyEarningsPage() {
   const [stats, setStats] = useState<EarningsResponse | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [bookings, setBookings] = useState<BookingRow[]>([]);
+  const [chartsReady, setChartsReady] = useState(false);
+  const [chartError, setChartError] = useState<string | null>(null);
 
   const loadEarnings = async (range: RangeKey) => {
     setLoading(true);
@@ -150,6 +152,32 @@ export default function AgencyEarningsPage() {
   useEffect(() => {
     loadEarnings(timeFilter);
   }, [timeFilter]);
+
+  useEffect(() => {
+    setChartsReady(true);
+  }, []);
+
+  const renderChart = (node: React.ReactNode) => {
+    if (!chartsReady) return <div className="h-[300px] w-full bg-muted/40 animate-pulse rounded-lg" />;
+    if (chartError) {
+      return (
+        <div className="h-[300px] flex items-center justify-center text-sm text-muted-foreground border border-dashed rounded-lg">
+          Charts unavailable: {chartError}
+        </div>
+      );
+    }
+    try {
+      return node;
+    } catch (err: any) {
+      console.error('AgencyEarningsPage chart error', err);
+      setChartError(err?.message || 'Chart render failed');
+      return (
+        <div className="h-[300px] flex items-center justify-center text-sm text-muted-foreground border border-dashed rounded-lg">
+          Charts unavailable. Please refresh.
+        </div>
+      );
+    }
+  };
 
   const summary = stats?.summary;
   const totalEarnings = summary?.totalEarnings ?? 0;
@@ -301,19 +329,21 @@ export default function AgencyEarningsPage() {
               <BarChart3 className="h-5 w-5 text-primary" />
               <h2 className="text-xl font-semibold">Monthly Earnings Trend</h2>
             </div>
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={monthlyEarnings}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
-                <YAxis />
-                <Tooltip
-                  formatter={(value: any) => `₹${value.toLocaleString()}`}
-                  contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }}
-                />
-                <Legend />
-                <Line type="monotone" dataKey="earnings" stroke="#8b5cf6" strokeWidth={2} name="Earnings" />
-              </LineChart>
-            </ResponsiveContainer>
+            {renderChart(
+              <ResponsiveContainer width="100%" height={300}>
+                <LineChart data={monthlyEarnings}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="month" />
+                  <YAxis />
+                  <Tooltip
+                    formatter={(value: any) => `₹${value.toLocaleString()}`}
+                    contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }}
+                  />
+                  <Legend />
+                  <Line type="monotone" dataKey="earnings" stroke="#8b5cf6" strokeWidth={2} name="Earnings" />
+                </LineChart>
+              </ResponsiveContainer>
+            )}
           </Card>
 
           {/* Category Distribution */}
@@ -322,32 +352,34 @@ export default function AgencyEarningsPage() {
               <PieChart className="h-5 w-5 text-primary" />
               <h2 className="text-xl font-semibold">Revenue by Category</h2>
             </div>
-            <ResponsiveContainer width="100%" height={300}>
-              <RechartsPieChart>
-                <Pie
-                  data={categoryChartData}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={({ name }) => {
-                    const found = categoryChartData.find((c) => c.name === name);
-                    const pct = found ? found.percentage : 0;
-                    return `${name}: ${pct.toFixed(1)}%`;
-                  }}
-                  outerRadius={100}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {categoryChartData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip
-                  formatter={(value: any) => `₹${value.toLocaleString()}`}
-                  contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }}
-                />
-              </RechartsPieChart>
-            </ResponsiveContainer>
+            {renderChart(
+              <ResponsiveContainer width="100%" height={300}>
+                <RechartsPieChart>
+                  <Pie
+                    data={categoryChartData}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={false}
+                    label={({ name }) => {
+                      const found = categoryChartData.find((c) => c.name === name);
+                      const pct = found ? found.percentage : 0;
+                      return `${name}: ${pct.toFixed(1)}%`;
+                    }}
+                    outerRadius={100}
+                    fill="#8884d8"
+                    dataKey="value"
+                  >
+                    {categoryChartData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    formatter={(value: any) => `₹${value.toLocaleString()}`}
+                    contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }}
+                  />
+                </RechartsPieChart>
+              </ResponsiveContainer>
+            )}
           </Card>
         </div>
 

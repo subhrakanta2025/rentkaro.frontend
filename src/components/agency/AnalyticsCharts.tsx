@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   BarChart,
   Bar,
@@ -48,6 +48,36 @@ interface AnalyticsChartsProps {
 const COLORS = ['hsl(var(--primary))', 'hsl(var(--success))', 'hsl(var(--warning))', 'hsl(var(--destructive))', 'hsl(var(--accent))'];
 
 export function AnalyticsCharts({ bookings, vehicles, transactions }: AnalyticsChartsProps) {
+  const [mounted, setMounted] = useState(false);
+  const [chartError, setChartError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Avoid rendering Recharts on the server or before mount; also prevent hard crashes
+  const renderSafe = (node: React.ReactNode) => {
+    if (!mounted) return <div className="h-64 w-full bg-muted/40 animate-pulse rounded-lg" />;
+    if (chartError) {
+      return (
+        <div className="h-64 flex items-center justify-center text-sm text-muted-foreground border border-dashed rounded-lg">
+          Charts unavailable: {chartError}
+        </div>
+      );
+    }
+    try {
+      return node;
+    } catch (err: any) {
+      console.error('AnalyticsCharts render error', err);
+      setChartError(err?.message || 'Chart render failed');
+      return (
+        <div className="h-64 flex items-center justify-center text-sm text-muted-foreground border border-dashed rounded-lg">
+          Charts unavailable. Please refresh.
+        </div>
+      );
+    }
+  };
+
   // Booking trends - last 7 days
   const bookingTrends = useMemo(() => {
     const today = new Date();
@@ -138,21 +168,23 @@ export function AnalyticsCharts({ bookings, vehicles, transactions }: AnalyticsC
         <div className="rounded-xl border border-border bg-card p-6 shadow-card">
           <h4 className="text-base font-semibold text-foreground mb-4">Booking Trends (Last 7 Days)</h4>
           <div className="h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={bookingTrends}>
-                <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-                <XAxis dataKey="date" className="text-xs" tick={{ fill: 'hsl(var(--muted-foreground))' }} />
-                <YAxis className="text-xs" tick={{ fill: 'hsl(var(--muted-foreground))' }} allowDecimals={false} />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: 'hsl(var(--card))',
-                    border: '1px solid hsl(var(--border))',
-                    borderRadius: '8px',
-                  }}
-                />
-                <Bar dataKey="bookings" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
+            {renderSafe(
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={bookingTrends}>
+                  <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
+                  <XAxis dataKey="date" className="text-xs" tick={{ fill: 'hsl(var(--muted-foreground))' }} />
+                  <YAxis className="text-xs" tick={{ fill: 'hsl(var(--muted-foreground))' }} allowDecimals={false} />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: 'hsl(var(--card))',
+                      border: '1px solid hsl(var(--border))',
+                      borderRadius: '8px',
+                    }}
+                  />
+                  <Bar dataKey="bookings" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            )}
           </div>
         </div>
 
@@ -160,32 +192,34 @@ export function AnalyticsCharts({ bookings, vehicles, transactions }: AnalyticsC
         <div className="rounded-xl border border-border bg-card p-6 shadow-card">
           <h4 className="text-base font-semibold text-foreground mb-4">Revenue Over Time (6 Months)</h4>
           <div className="h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={revenueOverTime}>
-                <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-                <XAxis dataKey="month" className="text-xs" tick={{ fill: 'hsl(var(--muted-foreground))' }} />
-                <YAxis 
-                  className="text-xs" 
-                  tick={{ fill: 'hsl(var(--muted-foreground))' }}
-                  tickFormatter={(value) => `₹${(value / 1000).toFixed(0)}k`}
-                />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: 'hsl(var(--card))',
-                    border: '1px solid hsl(var(--border))',
-                    borderRadius: '8px',
-                  }}
-                  formatter={(value: number) => [`₹${value.toLocaleString()}`, 'Revenue']}
-                />
-                <Line 
-                  type="monotone" 
-                  dataKey="revenue" 
-                  stroke="hsl(var(--success))" 
-                  strokeWidth={2}
-                  dot={{ fill: 'hsl(var(--success))' }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
+            {renderSafe(
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={revenueOverTime}>
+                  <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
+                  <XAxis dataKey="month" className="text-xs" tick={{ fill: 'hsl(var(--muted-foreground))' }} />
+                  <YAxis 
+                    className="text-xs" 
+                    tick={{ fill: 'hsl(var(--muted-foreground))' }}
+                    tickFormatter={(value) => `₹${(value / 1000).toFixed(0)}k`}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: 'hsl(var(--card))',
+                      border: '1px solid hsl(var(--border))',
+                      borderRadius: '8px',
+                    }}
+                    formatter={(value: number) => [`₹${value.toLocaleString()}`, 'Revenue']}
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="revenue" 
+                    stroke="hsl(var(--success))" 
+                    strokeWidth={2}
+                    dot={{ fill: 'hsl(var(--success))' }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            )}
           </div>
         </div>
 
@@ -198,27 +232,29 @@ export function AnalyticsCharts({ bookings, vehicles, transactions }: AnalyticsC
                 No booking data yet
               </div>
             ) : (
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={popularVehicles} layout="vertical">
-                  <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-                  <XAxis type="number" className="text-xs" tick={{ fill: 'hsl(var(--muted-foreground))' }} allowDecimals={false} />
-                  <YAxis 
-                    dataKey="name" 
-                    type="category" 
-                    className="text-xs" 
-                    tick={{ fill: 'hsl(var(--muted-foreground))' }}
-                    width={80}
-                  />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: 'hsl(var(--card))',
-                      border: '1px solid hsl(var(--border))',
-                      borderRadius: '8px',
-                    }}
-                  />
-                  <Bar dataKey="bookings" fill="hsl(var(--warning))" radius={[0, 4, 4, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
+              {renderSafe(
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={popularVehicles} layout="vertical">
+                    <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
+                    <XAxis type="number" className="text-xs" tick={{ fill: 'hsl(var(--muted-foreground))' }} allowDecimals={false} />
+                    <YAxis 
+                      dataKey="name" 
+                      type="category" 
+                      className="text-xs" 
+                      tick={{ fill: 'hsl(var(--muted-foreground))' }}
+                      width={80}
+                    />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: 'hsl(var(--card))',
+                        border: '1px solid hsl(var(--border))',
+                        borderRadius: '8px',
+                      }}
+                    />
+                    <Bar dataKey="bookings" fill="hsl(var(--warning))" radius={[0, 4, 4, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              )}
             )}
           </div>
         </div>
@@ -232,32 +268,34 @@ export function AnalyticsCharts({ bookings, vehicles, transactions }: AnalyticsC
                 No booking data yet
               </div>
             ) : (
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={statusDistribution}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={50}
-                    outerRadius={80}
-                    paddingAngle={5}
-                    dataKey="value"
-                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                    labelLine={{ stroke: 'hsl(var(--muted-foreground))' }}
-                  >
-                    {statusDistribution.map((_, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: 'hsl(var(--card))',
-                      border: '1px solid hsl(var(--border))',
-                      borderRadius: '8px',
-                    }}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
+              {renderSafe(
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={statusDistribution}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={50}
+                      outerRadius={80}
+                      paddingAngle={5}
+                      dataKey="value"
+                      label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                      labelLine={{ stroke: 'hsl(var(--muted-foreground))' }}
+                    >
+                      {statusDistribution.map((_, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: 'hsl(var(--card))',
+                        border: '1px solid hsl(var(--border))',
+                        borderRadius: '8px',
+                      }}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+              )}
             )}
           </div>
         </div>
