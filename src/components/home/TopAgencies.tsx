@@ -30,7 +30,7 @@ export function TopAgencies() {
           {agencies.slice(0, 8).map((agency, index) => (
             <Link
               key={agency.id}
-              to={`/agencies/${agency.id}`}
+              to="/agencies"
               className="group rounded-lg bg-card border border-border/50 p-2.5 sm:p-4 shadow-card transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1 animate-slide-up"
               style={{ animationDelay: `${index * 50}ms` }}
             >
