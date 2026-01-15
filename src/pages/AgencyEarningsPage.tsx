@@ -114,7 +114,102 @@ export default function AgencyEarningsPage() {
   const [R, setR] = useState<typeof import('recharts') | null>(null);
 
   const loadEarnings = async (range: RangeKey) => {
+    const now = new Date();
+    const rangeStart = getRangeStart(range, now);
     setLoading(true);
+    setChartError(null);
+    try {
+      const { data } = await apiClient.get<Partial<EarningsResponse> & { bookings?: BookingRow[] }>(
+        '/agency/earnings',
+        {
+          params: { range, from: rangeStart.toISOString(), to: now.toISOString() }
+        }
+      );
+
+      if (data) {
+        setStats((prev) => ({ ...prev, ...data } as EarningsResponse));
+        setBookings(data.bookings || []);
+        return;
+      }
+    } catch (error: any) {
+      console.error('Failed to load earnings data', error);
+      toast.error('Could not load earnings. Showing sample data.');
+
+      const fallback: EarningsResponse = {
+        range,
+        summary: {
+          totalEarnings: 125000,
+          totalBookings: 342,
+          averagePerBooking: 365,
+          growthRate: 12,
+          topVehicle: {
+            name: 'Hyundai Creta',
+            type: 'car',
+            bookings: 48,
+            earnings: 52000,
+            avgPerBooking: 1083
+          }
+        },
+        categories: [
+          { name: 'Cars', type: 'car', earnings: 90000, percentage: 72 },
+          { name: 'Bikes', type: 'bike', earnings: 35000, percentage: 28 }
+        ],
+        monthlyTrend: [
+          { month: 'Jan', earnings: 18000, bookings: 52 },
+          { month: 'Feb', earnings: 19500, bookings: 60 },
+          { month: 'Mar', earnings: 21000, bookings: 68 },
+          { month: 'Apr', earnings: 23000, bookings: 72 },
+          { month: 'May', earnings: 24500, bookings: 75 },
+          { month: 'Jun', earnings: 19500, bookings: 55 }
+        ],
+        vehiclePerformance: [
+          { name: 'Hyundai Creta', type: 'car', bookings: 48, earnings: 52000, avgPerBooking: 1083 },
+          { name: 'Maruti Swift', type: 'car', bookings: 36, earnings: 31000, avgPerBooking: 861 },
+          { name: 'Honda Activa', type: 'bike', bookings: 52, earnings: 18000, avgPerBooking: 346 },
+          { name: 'Royal Enfield Classic', type: 'bike', bookings: 28, earnings: 15000, avgPerBooking: 536 }
+        ],
+        paymentMethods: [
+          { method: 'UPI', amount: 64000, percentage: 51 },
+          { method: 'Card', amount: 42000, percentage: 34 },
+          { method: 'Cash', amount: 19000, percentage: 15 }
+        ]
+      };
+
+      const fallbackBookings: BookingRow[] = [
+        {
+          id: 'bk-001',
+          vehicleName: 'Hyundai Creta',
+          vehicleType: 'car',
+          startDate: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: now.toISOString(),
+          totalAmount: 8200,
+          paymentStatus: 'paid',
+          status: 'completed'
+        },
+        {
+          id: 'bk-002',
+          vehicleName: 'Honda Activa',
+          vehicleType: 'bike',
+          startDate: new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+          totalAmount: 1200,
+          paymentStatus: 'paid',
+          status: 'completed'
+        },
+        {
+          id: 'bk-003',
+          vehicleName: 'Maruti Swift',
+          vehicleType: 'car',
+          startDate: new Date(rangeStart.getTime() + 1 * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: new Date(rangeStart.getTime() + 3 * 24 * 60 * 60 * 1000).toISOString(),
+          totalAmount: 5400,
+          paymentStatus: 'pending',
+          status: 'ongoing'
+        }
+      ];
+
+      setStats(fallback);
+      setBookings(fallbackBookings);
     } finally {
       setLoading(false);
     }
