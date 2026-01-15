@@ -48,7 +48,7 @@ export const agencies: Agency[] = [
   {
     id: 'agency-1',
     name: 'Royal Wheels',
-    logo: 'https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=100&h=100&fit=crop',
+    logo: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=100&h=100&fit=crop',
     rating: 4.8,
     reviewCount: 342,
     totalVehicles: 45,
@@ -61,7 +61,7 @@ export const agencies: Agency[] = [
   {
     id: 'agency-2',
     name: 'City Rides',
-    logo: 'https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=200&h=200&fit=crop&q=60&auto=format',
+    logo: 'https://images.unsplash.com/photo-1485291571150-772bcfc10da5?w=100&h=100&fit=crop',
     rating: 4.6,
     reviewCount: 218,
     totalVehicles: 32,
@@ -74,7 +74,7 @@ export const agencies: Agency[] = [
   {
     id: 'agency-3',
     name: 'Metro Motors',
-    logo: 'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=100&h=100&fit=crop',
+    logo: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=100&h=100&fit=crop',
     rating: 4.5,
     reviewCount: 156,
     totalVehicles: 28,
@@ -87,7 +87,7 @@ export const agencies: Agency[] = [
   {
     id: 'agency-4',
     name: 'South Star Rentals',
-    logo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop',
+    logo: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=100&h=100&fit=crop',
     rating: 4.7,
     reviewCount: 189,
     totalVehicles: 38,
@@ -100,7 +100,7 @@ export const agencies: Agency[] = [
   {
     id: 'agency-5',
     name: 'Hyderabad Wheels',
-    logo: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100&h=100&fit=crop',
+    logo: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=100&h=100&fit=crop',
     rating: 4.6,
     reviewCount: 234,
     totalVehicles: 52,
@@ -113,7 +113,7 @@ export const agencies: Agency[] = [
   {
     id: 'agency-6',
     name: 'Pune Riders',
-    logo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop',
+    logo: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=100&h=100&fit=crop',
     rating: 4.4,
     reviewCount: 145,
     totalVehicles: 35,
@@ -126,7 +126,7 @@ export const agencies: Agency[] = [
   {
     id: 'agency-7',
     name: 'Kolkata Cabs',
-    logo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop',
+    logo: 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=100&h=100&fit=crop',
     rating: 4.5,
     reviewCount: 178,
     totalVehicles: 42,
@@ -139,7 +139,7 @@ export const agencies: Agency[] = [
   {
     id: 'agency-8',
     name: 'Gujarat Travels',
-    logo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop',
+    logo: 'https://images.unsplash.com/photo-1553440569-bcc63803a83d?w=100&h=100&fit=crop',
     rating: 4.7,
     reviewCount: 203,
     totalVehicles: 48,
