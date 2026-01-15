@@ -29,7 +29,7 @@ import { cn } from '@/lib/utils';
 const getFullImageUrl = (url: string | null): string | null => {
   if (!url) return null;
   if (url.startsWith('http')) return url;
-  const baseUrl = import.meta.env.VITE_API_URL || 'https://rentkaro-backend-807261496773.us-central1.run.app/api';
+  const baseUrl = import.meta.env.VITE_API_URL || 'https://api.rentkaro.online/api';
   return `${baseUrl.replace('/api', '')}${url}`;
 };
 

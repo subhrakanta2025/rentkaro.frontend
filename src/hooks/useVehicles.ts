@@ -53,7 +53,7 @@ const PLACEHOLDER_IMAGE = 'https://images.unsplash.com/photo-1511919884226-fd3ca
 const normalizeImageUrl = (url?: string | null): string | undefined => {
   if (!url) return undefined;
   if (url.startsWith('http')) return url;
-  const base = (import.meta.env.VITE_API_URL as string | undefined) || 'https://rentkaro-backend-807261496773.us-central1.run.app/api';
+  const base = (import.meta.env.VITE_API_URL as string | undefined) || 'https://api.rentkaro.online/api';
   return `${base.replace(/\/api$/, '')}${url.startsWith('/') ? url : `/${url}`}`;
 };
 
