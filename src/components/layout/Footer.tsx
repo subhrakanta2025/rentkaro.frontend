@@ -74,7 +74,7 @@ export function Footer() {
             <div className="mt-3 sm:mt-4 space-y-1.5 sm:space-y-2">
               <a href="tel:+911234567890" className="flex items-center gap-1.5 text-[11px] sm:text-xs text-muted-foreground hover:text-primary transition-colors">
                 <Phone className="h-3 sm:h-3.5 w-3 sm:w-3.5 text-primary flex-shrink-0" />
-                +91 12345 67890
+                +916372899795
               </a>
               <a href="mailto:support@rentkaro.online" className="flex items-center gap-1.5 text-[11px] sm:text-xs text-muted-foreground hover:text-primary transition-colors">
                 <Mail className="h-3 sm:h-3.5 w-3 sm:w-3.5 text-primary flex-shrink-0" />

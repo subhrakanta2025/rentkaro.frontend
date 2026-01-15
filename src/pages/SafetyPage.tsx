@@ -110,7 +110,7 @@ export default function SafetyPage() {
             </p>
             <div className="mt-6 inline-flex items-center gap-2 rounded-lg bg-destructive/10 px-6 py-3 text-lg font-semibold text-destructive">
               <Phone className="h-5 w-5" />
-              Emergency Helpline: +91 12345 67890
+              Emergency Helpline: +916372899795
             </div>
           </div>
         </section>

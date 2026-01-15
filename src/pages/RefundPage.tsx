@@ -78,7 +78,7 @@ export default function RefundPage() {
               <section>
                 <h2 className="text-2xl font-semibold text-foreground">Contact Us</h2>
                 <p className="mt-4 text-muted-foreground leading-relaxed">
-                  For any refund-related queries, please contact our support team at refunds@rentkaro.online or call +91 12345 67890. Our team is available Monday to Saturday, 9am to 6pm IST.
+                  For any refund-related queries, please contact our support team at refunds@rentkaro.online or call +916372899795. Our team is available Monday to Saturday, 9am to 6pm IST.
                 </p>
               </section>
             </div>

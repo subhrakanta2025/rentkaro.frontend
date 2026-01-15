@@ -65,7 +65,7 @@ const faqs = [
   },
   {
     question: 'How do I contact customer support?',
-    answer: 'You can reach us via email at support@rentkaro.online, call us at +91 12345 67890 (Mon-Sat, 9am-6pm), or use the contact form on our Contact Us page.',
+    answer: 'You can reach us via email at support@rentkaro.online, call us at +916372899795 (Mon-Sat, 9am-6pm), or use the contact form on our Contact Us page.',
   },
 ];
 
@@ -298,7 +298,7 @@ export default function HelpPage() {
                   </div>
                   <div className="flex items-center gap-3 text-sm">
                     <Phone className="h-5 w-5 text-primary" />
-                    <span>+91 12345 67890</span>
+                    <span>+916372899795</span>
                   </div>
                 </div>
               </div>
