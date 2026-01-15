@@ -64,7 +64,7 @@ export default function TermsPage() {
               <section>
                 <h2 className="text-2xl font-semibold text-foreground">8. Contact</h2>
                 <p className="mt-4 text-muted-foreground leading-relaxed">
-                  For any questions about these terms, please contact us at support@rentkaro.in or call +91 12345 67890.
+                  For any questions about these terms, please contact us at support@rentkaro.online or call +91 12345 67890.
                 </p>
               </section>
             </div>

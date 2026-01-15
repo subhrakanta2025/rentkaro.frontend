@@ -18,13 +18,13 @@ const contactInfo = [
   {
     icon: Mail,
     title: 'Email',
-    details: 'support@rentkaro.in',
+    details: 'support@rentkaro.online',
     subtext: 'We reply within 24 hours',
   },
   {
     icon: MapPin,
     title: 'Office',
-    details: 'Bangalore, Karnataka',
+    details: 'Hyderabad, Telangana',
     subtext: 'India',
   },
   {

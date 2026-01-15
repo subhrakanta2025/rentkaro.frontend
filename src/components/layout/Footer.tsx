@@ -54,8 +54,8 @@ const footerLinks = {
 const socialLinks = [
   { name: 'Facebook', icon: Facebook, href: '#' },
   { name: 'Twitter', icon: Twitter, href: '#' },
-  { name: 'Instagram', icon: Instagram, href: '#' },
-  { name: 'LinkedIn', icon: Linkedin, href: '#' },
+  { name: 'Instagram', icon: Instagram, href: 'https://www.instagram.com/rentkaro.online?igsh=MWQ1djhqbWU4dGM0YQ==' },
+  { name: 'LinkedIn', icon: Linkedin, href: 'https://www.linkedin.com/company/rentkaro/' },
 ];
 
 export function Footer() {
@@ -76,13 +76,13 @@ export function Footer() {
                 <Phone className="h-3 sm:h-3.5 w-3 sm:w-3.5 text-primary flex-shrink-0" />
                 +91 12345 67890
               </a>
-              <a href="mailto:support@rentkaro.in" className="flex items-center gap-1.5 text-[11px] sm:text-xs text-muted-foreground hover:text-primary transition-colors">
+              <a href="mailto:support@rentkaro.online" className="flex items-center gap-1.5 text-[11px] sm:text-xs text-muted-foreground hover:text-primary transition-colors">
                 <Mail className="h-3 sm:h-3.5 w-3 sm:w-3.5 text-primary flex-shrink-0" />
-                support@rentkaro.in
+                support@rentkaro.online
               </a>
               <p className="flex items-center gap-1.5 text-[11px] sm:text-xs text-muted-foreground">
                 <MapPin className="h-3 sm:h-3.5 w-3 sm:w-3.5 text-primary flex-shrink-0" />
-                Bangalore, Karnataka
+                Hyderabad, Telangana
               </p>
             </div>
           </div>

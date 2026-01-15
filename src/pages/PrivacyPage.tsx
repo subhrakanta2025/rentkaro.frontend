@@ -64,7 +64,7 @@ export default function PrivacyPage() {
               <section>
                 <h2 className="text-2xl font-semibold text-foreground">8. Contact Us</h2>
                 <p className="mt-4 text-muted-foreground leading-relaxed">
-                  If you have any questions about this privacy policy, please contact us at privacy@rentkaro.in or +91 12345 67890.
+                  If you have any questions about this privacy policy, please contact us at privacy@rentkaro.online or +91 12345 67890.
                 </p>
               </section>
             </div>
