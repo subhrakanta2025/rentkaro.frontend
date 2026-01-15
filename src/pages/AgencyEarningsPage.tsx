@@ -25,21 +25,6 @@ import {
   PieChart,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import {
-  LineChart,
-  Line,
-  BarChart,
-  Bar,
-  PieChart as RechartsPieChart,
-  Pie,
-  Cell,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from 'recharts';
 import { apiClient } from '@/services/api';
 
 type RangeKey = 'week' | 'month' | 'year';
@@ -126,6 +111,7 @@ export default function AgencyEarningsPage() {
   const [bookings, setBookings] = useState<BookingRow[]>([]);
   const [chartsReady, setChartsReady] = useState(false);
   const [chartError, setChartError] = useState<string | null>(null);
+  const [Recharts, setRecharts] = useState<typeof import('recharts') | null>(null);
 
   const loadEarnings = async (range: RangeKey) => {
     setLoading(true);
@@ -155,10 +141,22 @@ export default function AgencyEarningsPage() {
 
   useEffect(() => {
     setChartsReady(true);
+    let mounted = true;
+    import('recharts')
+      .then((mod) => {
+        if (mounted) setRecharts(mod);
+      })
+      .catch((err) => {
+        console.error('Failed to load charts bundle', err);
+        if (mounted) setChartError(err?.message || 'Charts failed to load');
+      });
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   const renderChart = (node: React.ReactNode) => {
-    if (!chartsReady) return <div className="h-[300px] w-full bg-muted/40 animate-pulse rounded-lg" />;
+    if (!chartsReady || !Recharts) return <div className="h-[300px] w-full bg-muted/40 animate-pulse rounded-lg" />;
     if (chartError) {
       return (
         <div className="h-[300px] flex items-center justify-center text-sm text-muted-foreground border border-dashed rounded-lg">
@@ -330,19 +328,21 @@ export default function AgencyEarningsPage() {
               <h2 className="text-xl font-semibold">Monthly Earnings Trend</h2>
             </div>
             {renderChart(
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={monthlyEarnings}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="month" />
-                  <YAxis />
-                  <Tooltip
-                    formatter={(value: any) => `₹${value.toLocaleString()}`}
-                    contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }}
-                  />
-                  <Legend />
-                  <Line type="monotone" dataKey="earnings" stroke="#8b5cf6" strokeWidth={2} name="Earnings" />
-                </LineChart>
-              </ResponsiveContainer>
+              Recharts && (
+                <Recharts.ResponsiveContainer width="100%" height={300}>
+                  <Recharts.LineChart data={monthlyEarnings}>
+                    <Recharts.CartesianGrid strokeDasharray="3 3" />
+                    <Recharts.XAxis dataKey="month" />
+                    <Recharts.YAxis />
+                    <Recharts.Tooltip
+                      formatter={(value: any) => `₹${value.toLocaleString()}`}
+                      contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }}
+                    />
+                    <Recharts.Legend />
+                    <Recharts.Line type="monotone" dataKey="earnings" stroke="#8b5cf6" strokeWidth={2} name="Earnings" />
+                  </Recharts.LineChart>
+                </Recharts.ResponsiveContainer>
+              )
             )}
           </Card>
 
@@ -353,32 +353,34 @@ export default function AgencyEarningsPage() {
               <h2 className="text-xl font-semibold">Revenue by Category</h2>
             </div>
             {renderChart(
-              <ResponsiveContainer width="100%" height={300}>
-                <RechartsPieChart>
-                  <Pie
-                    data={categoryChartData}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    label={({ name }) => {
-                      const found = categoryChartData.find((c) => c.name === name);
-                      const pct = found ? found.percentage : 0;
-                      return `${name}: ${pct.toFixed(1)}%`;
-                    }}
-                    outerRadius={100}
-                    fill="#8884d8"
-                    dataKey="value"
-                  >
-                    {categoryChartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip
-                    formatter={(value: any) => `₹${value.toLocaleString()}`}
-                    contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }}
-                  />
-                </RechartsPieChart>
-              </ResponsiveContainer>
+              Recharts && (
+                <Recharts.ResponsiveContainer width="100%" height={300}>
+                  <Recharts.PieChart>
+                    <Recharts.Pie
+                      data={categoryChartData}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      label={({ name }) => {
+                        const found = categoryChartData.find((c) => c.name === name);
+                        const pct = found ? found.percentage : 0;
+                        return `${name}: ${pct.toFixed(1)}%`;
+                      }}
+                      outerRadius={100}
+                      fill="#8884d8"
+                      dataKey="value"
+                    >
+                      {categoryChartData.map((entry, index) => (
+                        <Recharts.Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Recharts.Pie>
+                    <Recharts.Tooltip
+                      formatter={(value: any) => `₹${value.toLocaleString()}`}
+                      contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }}
+                    />
+                  </Recharts.PieChart>
+                </Recharts.ResponsiveContainer>
+              )
             )}
           </Card>
         </div>
