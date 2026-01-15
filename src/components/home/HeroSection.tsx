@@ -89,13 +89,13 @@ export function HeroSection() {
 
           {/* Headline */}
           <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground md:text-3xl lg:text-4xl animate-slide-up">
-            Rent Bikes & Cars
-            <span className="block text-gradient">Anytime, Anywhere</span>
+            Bike & Car Rental Near You
+            <span className="block text-gradient">Verified, Affordable, Ready</span>
           </h1>
 
           {/* Subheadline */}
           <p className="mt-2 sm:mt-3 text-xs sm:text-sm text-muted-foreground max-w-xl mx-auto animate-slide-up px-2" style={{ animationDelay: '100ms' }}>
-            Find the perfect ride from verified rental agencies. Affordable hourly & daily rentals with doorstep delivery across major Indian cities.
+            Book self drive car rental, bike rental near me, and two wheeler rental from government-verified agencies. Transparent prices, doorstep delivery, 24x7 support, and assured refunds across top Indian cities.
           </p>
 
           {/* Search Box */}
