@@ -95,7 +95,7 @@ export function HeroSection() {
 
           {/* Subheadline */}
           <p className="mt-2 sm:mt-3 text-xs sm:text-sm text-muted-foreground max-w-xl mx-auto animate-slide-up px-2" style={{ animationDelay: '100ms' }}>
-            Book self drive car rental, bike rental near me, and two wheeler rental from government-verified agencies. Transparent prices, doorstep delivery, 24x7 support, and assured refunds across top Indian cities.
+            Rent bikes and cars hourly, daily, or weekly from verified agencies across India. No hidden charges, instant booking confirmation, free cancellation up to 24 hours, and doorstep pickup & drop available in all major cities.
           </p>
 
           {/* Search Box */}
