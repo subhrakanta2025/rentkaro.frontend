@@ -33,6 +33,12 @@ const contactInfo = [
     details: 'Mon - Sat: 9am - 6pm',
     subtext: 'Sunday: Closed',
   },
+  {
+    icon: Mail,
+    title: 'Ad & Privacy Queries',
+    details: 'ads@rentkaro.online',
+    subtext: 'For ad, cookie, or privacy questions',
+  },
 ];
 
 export default function ContactPage() {
