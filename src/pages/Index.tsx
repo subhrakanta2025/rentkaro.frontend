@@ -8,7 +8,7 @@ import { TopAgencies } from '@/components/home/TopAgencies';
 import { TestimonialsSection } from '@/components/home/TestimonialsSection';
 import { FAQSection } from '@/components/home/FAQSection';
 import { CTASection } from '@/components/home/CTASection';
-import { setPageSEO } from '@/lib/seo';
+import { setPageSEO, setStructuredData } from '@/lib/seo';
 
 const Index = () => {
   useEffect(() => {
@@ -28,6 +28,41 @@ const Index = () => {
         'vehicle rental platform',
         'verified rental agencies'
       ],
+    });
+
+    setStructuredData('organization', {
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: 'RentKaro',
+      url: 'https://rentkaro.online/',
+      logo: 'https://rentkaro.online/logo.png'
+    });
+
+    setStructuredData('website', {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: 'RentKaro',
+      url: 'https://rentkaro.online/',
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: 'https://rentkaro.online/search?q={search_term_string}',
+        'query-input': 'required name=search_term_string'
+      }
+    });
+
+    setStructuredData('mobileapp', {
+      '@context': 'https://schema.org',
+      '@type': 'MobileApplication',
+      name: 'RentKaro',
+      operatingSystem: 'Android',
+      applicationCategory: 'TravelApplication',
+      url: 'https://rentkaro.online/',
+      downloadUrl: 'https://rentkaro.online/',
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'INR'
+      }
     });
   }, []);
 

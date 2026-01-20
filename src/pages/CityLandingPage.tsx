@@ -23,6 +23,22 @@ const cities = [
   { slug: 'vizag', name: 'Vizag', state: 'Andhra Pradesh' },
   { slug: 'vijayawada', name: 'Vijayawada', state: 'Andhra Pradesh' },
   { slug: 'tirupati', name: 'Tirupati', state: 'Andhra Pradesh' },
+  { slug: 'jaipur', name: 'Jaipur', state: 'Rajasthan' },
+  { slug: 'ahmedabad', name: 'Ahmedabad', state: 'Gujarat' },
+  { slug: 'surat', name: 'Surat', state: 'Gujarat' },
+  { slug: 'indore', name: 'Indore', state: 'Madhya Pradesh' },
+  { slug: 'bhopal', name: 'Bhopal', state: 'Madhya Pradesh' },
+  { slug: 'lucknow', name: 'Lucknow', state: 'Uttar Pradesh' },
+  { slug: 'kanpur', name: 'Kanpur', state: 'Uttar Pradesh' },
+  { slug: 'nagpur', name: 'Nagpur', state: 'Maharashtra' },
+  { slug: 'chandigarh', name: 'Chandigarh', state: 'Chandigarh' },
+  { slug: 'patna', name: 'Patna', state: 'Bihar' },
+  { slug: 'ranchi', name: 'Ranchi', state: 'Jharkhand' },
+  { slug: 'coimbatore', name: 'Coimbatore', state: 'Tamil Nadu' },
+  { slug: 'mysore', name: 'Mysore', state: 'Karnataka' },
+  { slug: 'goa', name: 'Goa', state: 'Goa' },
+  { slug: 'bhubaneswar', name: 'Bhubaneswar', state: 'Odisha' },
+  { slug: 'guwahati', name: 'Guwahati', state: 'Assam' },
 ];
 
 const categoryConfig = {
@@ -33,6 +49,7 @@ const categoryConfig = {
   'rent-car': { label: 'Rent Car', vehicle: 'car', primaryKeyword: 'rent car online' },
   'two-wheeler-rental': { label: 'Two Wheeler Rental', vehicle: 'bike', primaryKeyword: 'two wheeler rental near me' },
   'affordable-bike-rental': { label: 'Affordable Bike Rental', vehicle: 'bike', primaryKeyword: 'affordable bike rental' },
+  'vehicle-rental': { label: 'Vehicle Rental', vehicle: 'car', primaryKeyword: 'vehicle rental near me' },
 } as const;
 
 type CategoryKey = keyof typeof categoryConfig;

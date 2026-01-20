@@ -85,6 +85,8 @@ const SafetyPage = lazy(() => import("./pages/SafetyPage"));
 const BlogPage = lazy(() => import("./pages/BlogPage"));
 const BlogPostPage = lazy(() => import("./pages/BlogPostPage"));
 const FavoritesPage = lazy(() => import("./pages/FavoritesPage"));
+const CityLandingPage = lazy(() => import("./pages/CityLandingPage"));
+const CityIndexPage = lazy(() => import("./pages/CityIndexPage"));
 
 // Loading fallback component
 const PageLoader = () => (
@@ -137,6 +139,16 @@ function AppRoutes() {
           <Route path="/safety" element={<SafetyPage />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/:slug" element={<BlogPostPage />} />
+          <Route path="/cities" element={<CityIndexPage />} />
+          {/* City SEO landing pages */}
+          <Route path="/bike-rental-in-:citySlug" element={<CityLandingPage category="bike-rental" />} />
+          <Route path="/car-rental-in-:citySlug" element={<CityLandingPage category="car-rental" />} />
+          <Route path="/vehicle-rental-in-:citySlug" element={<CityLandingPage category="vehicle-rental" />} />
+          <Route path="/self-drive-car-rental-in-:citySlug" element={<CityLandingPage category="self-drive-car-rental" />} />
+          <Route path="/rent-bike-in-:citySlug" element={<CityLandingPage category="rent-bike" />} />
+          <Route path="/rent-car-in-:citySlug" element={<CityLandingPage category="rent-car" />} />
+          <Route path="/two-wheeler-rental-in-:citySlug" element={<CityLandingPage category="two-wheeler-rental" />} />
+          <Route path="/affordable-bike-rental-in-:citySlug" element={<CityLandingPage category="affordable-bike-rental" />} />
           {/* Make KYC accessible without redirecting home */}
           <Route path="/kyc-verification" element={<KYCVerificationPage />} />
           
